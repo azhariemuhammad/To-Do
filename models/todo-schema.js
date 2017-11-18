@@ -4,7 +4,6 @@ const Schema = mongoose.Schema
 
 const todoSchema = new Schema({
   task      : String,
-  user      : String,
   tags      : String,
   createdAt : {
     type    : Date,

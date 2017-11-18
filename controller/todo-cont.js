@@ -17,7 +17,6 @@ const create = (req, res) => {
   let todo = new Todo(
     {
       task  : req.body.task,
-      user  : req.body.user,
       tags  : req.body.tags
     }
   )
@@ -38,7 +37,6 @@ const findAndUpdate = (req, res) => {
     {_id : req.params.id},
     {
       task  : req.body.task,
-      user  : req.body.user,
       tags  : req.body.tags
     }
   )
@@ -53,13 +51,11 @@ const findAndUpdate = (req, res) => {
 }
 
 
-
+// TODO: disini buat agar bisa menacari todo berdasarkan query yang di minta
 const findWhere = (req, res) => {
-  Todo.find('user').
-  where('user').equals(req.params.user).
+  Todo.find('task').
   where('tags').in(req.params.tag).
   select('task').
-  select('user').
   select('createdAt').
   exec((error, todos) => {
     if (!error) {

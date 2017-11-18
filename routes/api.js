@@ -11,7 +11,7 @@ router.post('/todo', todoController.create)
 
 router.put('/todo/:id', todoController.findAndUpdate)
 
-router.get('/todo/:user/:tag', todoController.findWhere)
+router.get('/todo/:tag', todoController.findWhere)
 
 router.delete('/todo/:id', todoController.findByIdAndRemove)
 
