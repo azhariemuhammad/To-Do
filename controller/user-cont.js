@@ -14,14 +14,14 @@ const findAllUsers = (req, res) => {
 
 //create one todo using method save
 const create = (req, res) => {
-  let user = new User(
+  let User = new UserTask(
     {
-      username  : req.body.username,
+      user      : req.body.username,
       email     : req.body.email,
       password  : req.body.password
     }
   )
-  user.save()
+  User.save()
   .then(user => {
     console.log(user);
     msg = 'succes create new user'
@@ -33,7 +33,7 @@ const create = (req, res) => {
   })
 }
 
-
+//
 const findAndUpdate = (req, res) => {
   User.findByIdAndUpdate(
     {_id : req.params.id},
@@ -51,24 +51,24 @@ const findAndUpdate = (req, res) => {
     res.status(500).send(err)
   })
 }
-//
-//
-//
-// const findWhere = (req, res) => {
-//   User.find('user').
-//   where('user').equals(req.params.user).
-//   where('tags').in(req.params.tag).
-//   select('task').
-//   select('user').
-//   select('createdAt').
-//   exec((error, todos) => {
-//     if (!error) {
-//       res.send(todos)
-//     } else {
-//       res.send(error)
-//     }
-//   })
-// }
+
+
+
+const findWhere = (req, res) => {
+  User.find('user').
+  where('user').equals(req.params.user).
+  where('tags').in(req.params.tag).
+  select('task').
+  select('user').
+  select('createdAt').
+  exec((error, todos) => {
+    if (!error) {
+      res.send(todos)
+    } else {
+      res.send(error)
+    }
+  })
+}
 
 const findByIdAndRemove = (req, res) => {
   User.findByIdAndRemove({_id : req.params.id})
@@ -87,6 +87,6 @@ module.exports = {
    create,
    findAllUsers,
    findAndUpdate,
-   findByIdAndRemove
-   // findWhere,
+   findByIdAndRemove,
+   findWhere,
 };

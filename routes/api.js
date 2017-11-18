@@ -11,7 +11,11 @@ router.post('/todo', todoController.create)
 
 router.put('/todo/:id', todoController.findAndUpdate)
 
-router.get('/todo/:tag', todoController.findWhere)
+router.get('/todo/:id', todoController.findOne)
+
+router.get('/todo/findtasks/:userId', todoController.findTasks)
+
+router.get('/todo/:userId/:tag', todoController.findbyTag)
 
 router.delete('/todo/:id', todoController.findByIdAndRemove)
 

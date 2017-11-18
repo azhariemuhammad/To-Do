@@ -4,11 +4,36 @@ let msg = ''
 
 // find all todo list
 const findAllTodo = (req, res) => {
-  Todo.find().then(todolists => {
-    res.status(200).send(todolists)
+  Todo.find().
+  populate('userId').
+  exec((error, todolists) => {
+    if (!error) {
+      res.status(200).send(todolists)
+    } else {
+      res.status(500).send(error)
+    }
   })
-  .catch(err => {
-    res.status(500).send({err:err})
+}
+
+
+const findOne = (req, res) => {
+  Transaction.find({_id : req.params.id}).
+  populate('userId').
+  exec((error, todo) => {
+    if (!error) {
+      res.status(200).send(todo)
+    } else {
+      res.status(500).send(error)
+    }
+  })
+
+
+  .exec((err, transaction) => {
+    if (!err) {
+      res.status(200).send({transaction:transaction})
+    } else {
+      res.status(500).send({error:err})
+    }
   })
 }
 
@@ -16,6 +41,7 @@ const findAllTodo = (req, res) => {
 const create = (req, res) => {
   let todo = new Todo(
     {
+      userId  : req.body.userId,
       task  : req.body.task,
       tags  : req.body.tags
     }
@@ -36,6 +62,7 @@ const findAndUpdate = (req, res) => {
   Todo.findByIdAndUpdate(
     {_id : req.params.id},
     {
+      userId: req.body.userId,
       task  : req.body.task,
       tags  : req.body.tags
     }
@@ -52,11 +79,30 @@ const findAndUpdate = (req, res) => {
 
 
 // TODO: disini buat agar bisa menacari todo berdasarkan query yang di minta
-const findWhere = (req, res) => {
+const findTasks = (req, res) => {
   Todo.find('task').
-  where('tags').in(req.params.tag).
+  where('userId').in(req.params.userId).
   select('task').
+  select('tags').
   select('createdAt').
+  populate('userId').
+  exec((error, todos) => {
+    if (!error) {
+      res.send(todos)
+    } else {
+      res.send(error)
+    }
+  })
+}
+
+const findbyTag = (req, res) => {
+  Todo.find({tags : {$all : [req.params.tag]}}).
+  where('userId').in(req.params.userId).
+  select('userId').
+  select('task').
+  select('tags').
+  select('createdAt').
+  populate('userId').
   exec((error, todos) => {
     if (!error) {
       res.send(todos)
@@ -83,6 +129,9 @@ module.exports = {
   create,
   findAllTodo,
   findAndUpdate,
-  findWhere,
-  findByIdAndRemove
+  findTasks,
+  findByIdAndRemove,
+  findOne,
+  findbyTag
+
 };
