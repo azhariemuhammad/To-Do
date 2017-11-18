@@ -47,6 +47,7 @@ const findAndUpdate = (req, res) => {
     res.status(201).send({newtodo:newtodo, message:msg})
   })
   .catch(err => {
+    console.log(err);
     res.status(500).send({err:err})
   })
 }
