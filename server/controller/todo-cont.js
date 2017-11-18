@@ -8,8 +8,9 @@ let decoded = ''
 
 // find all todo list
 const findAllTodo = (req, res) => {
-  decoded = jwt.decode(req.headers.token)
-  Todo.find({userId:decoded.id}).
+  //decoded = jwt.decode(req.headers.token)
+  Todo.find().
+  //Todo.find({userId:decoded.id}).
   populate('userId').
   exec((error, todolists) => {
     if (!error) {
@@ -22,8 +23,9 @@ const findAllTodo = (req, res) => {
 
 //TODO: ini harus edit
 const findOne = (req, res) => {
-  decoded = jwt.decode(req.headers.token)
-  Todo.find({_id : req.params.id, userId : decoded.id }).
+  //decoded = jwt.decode(req.headers.token)
+  //Todo.find({_id : req.params.id, userId : decoded.id }).
+  Todo.find({_id : req.params.id}).
   populate('userId').
   exec((error, todo) => {
     if (!error) {
@@ -36,6 +38,7 @@ const findOne = (req, res) => {
 
 //create one todo using method save
 const create = (req, res) => {
+  console.log('masuk');
   let todo = new Todo(
     {
       userId     : req.body.userId,
@@ -57,9 +60,9 @@ const create = (req, res) => {
 
 
 const findAndUpdate = (req, res) => {
-  decoded = jwt.decode(req.headers.token)
+  //decoded = jwt.decode(req.headers.token)
   Todo.findByIdAndUpdate(
-    {_id : req.params.id, userId : decoded.id},
+    {_id : req.params.id},
     {
       userId     : req.body.userId,
       task       : req.body.task,
