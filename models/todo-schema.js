@@ -7,11 +7,12 @@ const todoSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  task      : String,
-  tags      : [{type: String}],
-  createdAt : {
-    type    : Date,
-    default : Date.now
+  task       : String,
+  tags       : [{type: String}],
+  isComplete : Boolean,
+  createdAt  : {
+    type     : Date,
+    default  : Date.now
   }
 })
 

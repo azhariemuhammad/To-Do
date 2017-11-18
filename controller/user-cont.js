@@ -1,4 +1,6 @@
 const User = require('../models/user-schema')
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 let msg = ''
 
 
@@ -14,23 +16,30 @@ const findAllUsers = (req, res) => {
 
 //create one todo using method save
 const create = (req, res) => {
-  let User = new UserTask(
-    {
-      user      : req.body.username,
-      email     : req.body.email,
-      password  : req.body.password
+  let password = req.body.password
+  bcrypt.hash(password, saltRounds, function(err, hash) {
+    if (!err) {
+      console.log('hash of the password is ' + hash);
+      storehash = hash;
+      User.create(
+        {
+          username  : req.body.username,
+          email     : req.body.email,
+          password  : hash
+        }
+      )
+      .then(user => {
+        console.log(user);
+        msg = 'succes create new user'
+        res.status(201).send({user:user, message:msg})
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(200).send(err)
+      })
     }
-  )
-  User.save()
-  .then(user => {
-    console.log(user);
-    msg = 'succes create new user'
-    res.status(201).send({user:user, message:msg})
   })
-  .catch(err => {
-    console.log(err);
-    res.status(200).send(err)
-  })
+
 }
 
 //

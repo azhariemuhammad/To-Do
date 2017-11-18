@@ -1,10 +1,15 @@
 const Todo = require('../models/todo-schema')
 let msg = ''
+const verify = require('../middleware/verify')
+const jwt = require('jsonwebtoken')
+let decoded = ''
+
 
 
 // find all todo list
 const findAllTodo = (req, res) => {
-  Todo.find().
+  decoded = jwt.decode(req.headers.token)
+  Todo.find({userId:decoded.id}).
   populate('userId').
   exec((error, todolists) => {
     if (!error) {
@@ -15,9 +20,10 @@ const findAllTodo = (req, res) => {
   })
 }
 
-
+//TODO: ini harus edit
 const findOne = (req, res) => {
-  Transaction.find({_id : req.params.id}).
+  decoded = jwt.decode(req.headers.token)
+  Todo.find({_id : req.params.id, userId : decoded.id }).
   populate('userId').
   exec((error, todo) => {
     if (!error) {
@@ -26,24 +32,16 @@ const findOne = (req, res) => {
       res.status(500).send(error)
     }
   })
-
-
-  .exec((err, transaction) => {
-    if (!err) {
-      res.status(200).send({transaction:transaction})
-    } else {
-      res.status(500).send({error:err})
-    }
-  })
 }
 
 //create one todo using method save
 const create = (req, res) => {
   let todo = new Todo(
     {
-      userId  : req.body.userId,
-      task  : req.body.task,
-      tags  : req.body.tags
+      userId     : req.body.userId,
+      task       : req.body.task,
+      tags       : req.body.tags,
+      isComplete : req.body.isComplete
     }
   )
   todo.save()
@@ -59,12 +57,14 @@ const create = (req, res) => {
 
 
 const findAndUpdate = (req, res) => {
+  decoded = jwt.decode(req.headers.token)
   Todo.findByIdAndUpdate(
-    {_id : req.params.id},
+    {_id : req.params.id, userId : decoded.id},
     {
-      userId: req.body.userId,
-      task  : req.body.task,
-      tags  : req.body.tags
+      userId     : req.body.userId,
+      task       : req.body.task,
+      tags       : req.body.tags,
+      isComplete : req.body.isComplete
     }
   )
   .then(newtodo => {
@@ -80,7 +80,7 @@ const findAndUpdate = (req, res) => {
 
 // TODO: disini buat agar bisa menacari todo berdasarkan query yang di minta
 const findTasks = (req, res) => {
-  Todo.find('task').
+  Todo.find({'task': req.body.task}).
   where('userId').in(req.params.userId).
   select('task').
   select('tags').
@@ -96,7 +96,9 @@ const findTasks = (req, res) => {
 }
 
 const findbyTag = (req, res) => {
-  Todo.find({tags : {$all : [req.params.tag]}}).
+  console.log('fooo');
+  console.log(req.params)
+  Todo.find({tags : {$all : [req.body.tag]}}).
   where('userId').in(req.params.userId).
   select('userId').
   select('task').

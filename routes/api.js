@@ -2,10 +2,19 @@ const express = require('express')
 const router  = express.Router()
 const todoController = require('../controller/todo-cont')
 const userController = require('../controller/user-cont')
+const registerController = require('../controller/register-cont')
+const verify = require('../middleware/verify')
+
+
+
+/// ================= register ====================////
+router.post('/signin', registerController.signin)
+
+router.post('/signup', registerController.signup)
 
 
 /// ================= todo ====================////
-router.get('/todo', todoController.findAllTodo)
+router.get('/todo', verify.isLogin, todoController.findAllTodo)
 
 router.post('/todo', todoController.create)
 
@@ -13,9 +22,9 @@ router.put('/todo/:id', todoController.findAndUpdate)
 
 router.get('/todo/:id', todoController.findOne)
 
-router.get('/todo/findtasks/:userId', todoController.findTasks)
+router.post('/todo/:userId', todoController.findTasks)
 
-router.get('/todo/:userId/:tag', todoController.findbyTag)
+router.post('/todo/:userId', todoController.findbyTag)
 
 router.delete('/todo/:id', todoController.findByIdAndRemove)
 
