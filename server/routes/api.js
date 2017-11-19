@@ -14,13 +14,13 @@ router.post('/signup', registerController.signup)
 
 
 /// ================= todo ====================////
-router.get('/todo', todoController.findAllTodo)
+router.get('/todo/:id', todoController.findAllTodo)
 
 router.post('/todo', todoController.create)
 
 router.put('/todo/:id', todoController.findAndUpdate)
 
-router.get('/todo/:id', todoController.findOne)
+router.get('/todo/edit/:id', todoController.findOne)
 
 router.post('/todo/:userId', todoController.findTasks)
 
