@@ -5,7 +5,7 @@ const userController = require('../controller/user-cont')
 const registerController = require('../controller/register-cont')
 const listController = require('../controller/list-cont')
 const verify = require('../middleware/verify')
-
+var cors = require('cors')
 
 
 /// ================= register ====================////
@@ -15,7 +15,8 @@ router.post('/signup', registerController.signup)
 
 
 /// ================= todo ====================////
-router.get('/todo/:id', todoController.findAllTodo)
+// router.get('/todo/:id', todoController.findAllTodo)
+router.get('/todo', todoController.findAllTodo)
 
 router.post('/todo', todoController.create)
 

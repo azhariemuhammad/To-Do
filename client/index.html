@@ -8,7 +8,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.css.map">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css.map">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.1/axios.js" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.1/axios.min.js" charset="utf-8"></script>
   <link rel="stylesheet" href="stylesheet.css">
+  <script src="https://unpkg.com/vue"></script>
+
+
   <title>Todo</title>
 </head>
 
@@ -93,7 +98,7 @@
             <div class="hero-body">
               <div class="container">
                 <h1 class="title">
-                  Hello, Admin.
+                  Hello, Azharie.
                 </h1>
                 <h2 class="subtitle">
                   I hope you are having a great day!
@@ -106,40 +111,35 @@
             </div>
           </section>
 
-          <div class="field">
+          <form v-on:submit.prevent="createNewTodo">
             <div class="control">
-              <textarea class="textarea" placeholder="What Are You Doing Today?"></textarea>
+              <textarea class="textarea" v-model="task" placeholder="What Are You Doing Today?"></textarea>
             </div>
             <div class="field is-grouped">
               <div class="control">
-                <button class="button is-link">Submit</button>
+                <input type="submit" class="button is-link" value="Add a To-Do">
               </div>
               <div class="control">
                 <button class="button is-text">Cancel</button>
               </div>
             </div>
-          </div>
+          </form>
 
-          <div class="card">
-            <div class="card-header"><p class="card-header-title">Header</p></div>
-            <div class="card-content"><div class="content">Content</div></div>
-          </div>
-          <br />
+             <div class="card">
+                <todo-lists/>
+            </div>
+
 
         </div>
       </div>
 
     </section>
 
-    <footer class="footer is-hidden">
-      <div class="container">
-        <div class="content has-text-centered">
-          <p>Hello</p>
-        </div>
-      </div>
-    </footer>
+
   </div>
+  <script src="js/list-task.js" charset="utf-8"></script>
 </body>
+
 </html>
 
 
