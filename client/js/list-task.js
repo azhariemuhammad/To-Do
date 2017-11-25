@@ -23,7 +23,8 @@ Vue.component('todo-lists', {
                   <time>{{todo.createdAt}}</time>
                 </div>
               </div>
-                <button class="button is-text" @click.prevent="removeTodo(todo._id)" >Remove</button>
+                <a class="tag is-delete is-medium" @click.prevent="removeTodo(todo._id)"></a>
+
             </div>
         </div>`,
   data () {

@@ -112,9 +112,9 @@
                 <h2 class="subtitle">
                   I hope you are having a great day!
                 </h2>
-                <div class="level-right">
-                  <p class="level-item"><strong>Today Weather</strong></p>
-                  <p class="level-item"><a>91 Fahrenheit</a></p>
+                <div class="level-center">
+                  <p class="level-item"><strong>Today's Weather || {{ location }}</strong></p>
+                  <p class="level-item"><a>{{ temp }} Fahrenheit</a></p>
                 </div>
               </div>
             </div>
@@ -156,6 +156,18 @@
       task : '',
       user: '',
       userId : '',
+      location: '',
+      temp : ''
+    },
+    created : function () {
+      axios.get(`https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22jakarta%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys`)
+      .then(response => {
+        this.location = response.data.query.results.channel.location.city
+        this.temp = response.data.query.results.channel.item.condition.temp
+      })
+      .catch(err => {
+        console.log(err);
+      })
     },
     methods : {
       createNewTodo : function () {
