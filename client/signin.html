@@ -3,6 +3,10 @@
 <head>
 <title>Facebook Login JavaScript Example</title>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.css.map">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css.map">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="main.js" charset="utf-8"></script>
@@ -80,7 +84,7 @@
     FB.api('/me', {  fields : 'id,name, email, picture{url}'}, function(response) {
         console.log(response)
         localStorage.setItem('name', response.name)
-         window.location = 'http://localhost:8080/helloworld.html'
+        window.location = 'http://localhost:8080/client/index.html'
         createUser(response)
         console.log('Successful login for: ' + response.name);
         document.getElementById('status').innerHTML =
@@ -89,16 +93,46 @@
   }
 
 </script>
+<section class="hero">
+  <div class="hero-body">
+    <div class="container" style="text-align:center; font-size:3rem;"
+      <h1 class="title">
+        To-do
+      </h1>
+    </div>
+  </div>
+</section>
+
+<div class="container is-fluid">
+  <div class="notification">
+    <section class="section">
+      <div class="container">
+            <div class="container has-text-centered">
+              <div class="column is-4 is-offset-4">
+                <h3 class="title has-text-grey">Login</h3>
+                <p class="subtitle has-text-grey">From work to play, To-Do is the easiest way to get stuff done, every day.</p>
+                <div class="box">
+                  <!-- <button id="login-btn" class="btn btn-primary" type="button" onclick="FBLogin()">
+                    <i class="fa fa-facebook-official"></i> Login With Facebook
+                  </button> -->
+                    <!-- <a class="button is-block is-info is-large">Login</a> -->
+                    <fb:login-button  scope="public_profile,email" onlogin="checkLoginState();">
+                </fb:login-button>
+
+                </div>
+                <p class="has-text-grey">
+                  <a href="../">Sign Up</a> &nbsp;·&nbsp;
+                  <a href="../">Forgot Password</a> &nbsp;·&nbsp;
+                  <a href="../">Need Help?</a>
+                </p>
+              </div>
+            </div>
+      </div>
+    </section>
+  </div>
+</div>
 
 
-<!--
-  Below we include the Login Button social plugin. This button uses
-  the JavaScript SDK to present a graphical Login button that triggers
-  the FB.login() function when clicked.
--->
-
-<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-</fb:login-button>
 
 <div id="status">
 </div>

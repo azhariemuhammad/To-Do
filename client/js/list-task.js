@@ -4,7 +4,7 @@ Vue.component('todo-lists', {
             <div class="card" v-for="todo in todos">
               <header class="card-header" >
               <div class="round">
-                <input type="checkbox" v-model="isDone" @click="doneTask(todo)"  id="checkbox" />
+                <input type="checkbox" v-model="todo.isComplete" @click="doneTask(todo)"  id="checkbox" />
                 <label for="checkbox"></label>
               </div>
                 <p class="card-header-title">
@@ -34,6 +34,11 @@ Vue.component('todo-lists', {
     }
   },
   created : function () {
+
+    let token = localStorage.getItem('token')
+    if (token === null) {
+        document.location = 'http://localhost:8080/client/signin.html'
+    }
     console.log('hello');
     axios.get('http://localhost:3000/api/todo')
     .then(response => {
@@ -57,6 +62,7 @@ Vue.component('todo-lists', {
     doneTask : function (todo) {
       console.log(todo, '-----');
       this.isDone = !this.isDone
+      console.log(this.isDone);
       // axios.put(`http://localhost:3000/api/todo/${todo._id}`, {
       //   task : todo.task,
       //   userId : todo.userId,
