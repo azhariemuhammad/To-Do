@@ -20,6 +20,15 @@
 <body>
   <html>
 <body>
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container" style="text-align:center; font-size:3rem;"
+        <h1 class="title">
+          To-do
+        </h1>
+      </div>
+    </div>
+  </section>
   <div id="app">
     <nav class="nav has-shadow">
       <div class="container">
@@ -146,14 +155,16 @@
     data : {
       task : '',
       user: '',
-      userId : '5a18eb33fd91471770d606fa',
+      userId : '',
     },
     methods : {
       createNewTodo : function () {
         let token = localStorage.getItem('token')
+        this.userId = localStorage.getItem('userId')
         if (token === null) {
             document.location = 'http://localhost:8080/client/signin.html'
         }
+        console.log(this.userId);
         axios.post('http://localhost:3000/api/todo', {
           userId : this.userId,
           task : this.task,

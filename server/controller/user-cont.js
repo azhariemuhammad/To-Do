@@ -14,6 +14,14 @@ const findAllUsers = (req, res) => {
   })
 }
 
+const findOne = (req, res) => {
+  User.find({username: req.params.username}).then(users => {
+    res.status(200).send(users)
+  })
+  .catch(err => {
+    res.status(500).send(err)
+  })
+}
 //create one todo using method save
 const create = (req, res) => {
   // let password = req.body.password
@@ -93,6 +101,7 @@ const findByIdAndRemove = (req, res) => {
 
 module.exports = {
    create,
+   findOne,
    findAllUsers,
    findAndUpdate,
    findByIdAndRemove,

@@ -16,7 +16,7 @@ router.post('/signup', registerController.signup)
 
 /// ================= todo ====================////
 // router.get('/todo/:id', todoController.findAllTodo)
-router.get('/todo', todoController.findAllTodo)
+router.get('/todo/:userId', todoController.findAllTodo)
 
 router.post('/todo', todoController.create)
 
@@ -33,6 +33,8 @@ router.delete('/todo/:id', todoController.findByIdAndRemove)
 
 /// ================= user ====================////
 router.get('/users', userController.findAllUsers)
+
+router.get('/users/:username', userController.findOne)
 
 router.post('/users', userController.create)
 

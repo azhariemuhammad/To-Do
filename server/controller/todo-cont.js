@@ -9,8 +9,8 @@ let decoded = ''
 // find all todo list
 const findAllTodo = (req, res) => {
   //decoded = jwt.decode(req.headers.token)
-   Todo.find().
-  // Todo.find({userId:req.params.id}).
+  // Todo.find().
+  Todo.find({userId:req.params.userId}).
   //Todo.find({userId:decoded.id}).
   populate('userId').
   exec((error, todolists) => {

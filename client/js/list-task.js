@@ -31,18 +31,19 @@ Vue.component('todo-lists', {
       username: '',
       todos: '',
       isDone : false,
+      userId : ''
 
     }
   },
   created : function () {
-
-
-    console.log('hello');
-    axios.get('http://localhost:3000/api/todo')
+   let username = localStorage.getItem("username")
+   let userId = localStorage.getItem('userId')
+    console.log(username, '----');
+    axios.get(`http://localhost:3000/api/todo/${userId}`)
     .then(response => {
-      console.log(response.data);
-        let username = response.data[0].userId.username
+      console.log(response);
         this.username = username
+        this.userId  = userId
         this.todos = response.data
         console.log(this.todos);
         this.getUsername()
