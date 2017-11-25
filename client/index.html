@@ -98,7 +98,7 @@
             <div class="hero-body">
               <div class="container">
                 <h1 class="title">
-                  Hello, Azharie.
+                  Hello, {{ user }}
                 </h1>
                 <h2 class="subtitle">
                   I hope you are having a great day!
@@ -126,7 +126,7 @@
           </form>
 
              <div class="card">
-                <todo-lists/>
+                <todo-lists @user-emit="setUserName"/>
             </div>
 
 
@@ -137,7 +137,42 @@
 
 
   </div>
+  <script src="js/section.js" charset="utf-8"></script>
   <script src="js/list-task.js" charset="utf-8"></script>
+  <script type="text/javascript">
+
+  new Vue ({
+    el: '#app',
+    data : {
+      task : '',
+      user: '',
+      userId : '5a18eb33fd91471770d606fa',
+    },
+    methods : {
+      createNewTodo : function () {
+        let token = localStorage.getItem('token')
+        if (token === null) {
+            document.location = 'http://localhost:8080/client/signin.html'
+        }
+        axios.post('http://localhost:3000/api/todo', {
+          userId : this.userId,
+          task : this.task,
+          isComplete : false
+        })
+        .then(response => {
+            console.log(response);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+      },
+      setUserName : function (payload) {
+        console.log(payload, '-0-0-0-0');
+        this.user = payload.username
+      }
+    }
+  })
+  </script>
 </body>
 
 </html>

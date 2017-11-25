@@ -1,9 +1,10 @@
+
 Vue.component('todo-lists', {
   template: `
           <div>
             <div class="card" v-for="todo in todos">
               <header class="card-header" >
-              <div class="round">
+              <div id="round">
                 <input type="checkbox" v-model="todo.isComplete" @click="doneTask(todo)"  id="checkbox" />
                 <label for="checkbox"></label>
               </div>
@@ -23,27 +24,28 @@ Vue.component('todo-lists', {
                 </div>
               </div>
                 <button class="button is-text" @click.prevent="removeTodo(todo._id)" >Remove</button>
-
             </div>
         </div>`,
   data () {
     return {
-      name: 'amri',
+      username: '',
       todos: '',
-      showModal : false
+      isDone : false,
+
     }
   },
   created : function () {
 
-    let token = localStorage.getItem('token')
-    if (token === null) {
-        document.location = 'http://localhost:8080/client/signin.html'
-    }
+
     console.log('hello');
     axios.get('http://localhost:3000/api/todo')
     .then(response => {
+      console.log(response.data);
+        let username = response.data[0].userId.username
+        this.username = username
         this.todos = response.data
         console.log(this.todos);
+        this.getUsername()
     })
     .catch(err => {
       console.log(err);
@@ -62,42 +64,21 @@ Vue.component('todo-lists', {
     doneTask : function (todo) {
       console.log(todo, '-----');
       this.isDone = !this.isDone
-      console.log(this.isDone);
-      // axios.put(`http://localhost:3000/api/todo/${todo._id}`, {
-      //   task : todo.task,
-      //   userId : todo.userId,
-      //   isComplete : this.isDone
-      // })
-      // .then(response => {
-      //   console.log(response);
-      // })
-      // .catch(err => {
-      //   console.log(err);
-      // })
-    }
-
-  }
-})
-
-new Vue ({
-  el: '#app',
-  data : {
-    task : '',
-    userId : '5a18eb33fd91471770d606fa',
-    isDone : false
-  },
-  methods : {
-    createNewTodo : function () {
-      axios.post('http://localhost:3000/api/todo', {
-        userId : this.userId,
-        task : this.task,
-        isComplete : false
+      axios.put(`http://localhost:3000/api/todo/${todo._id}`, {
+        task : todo.task,
+        userId : todo.userId,
+        isComplete : this.isDone
       })
       .then(response => {
-          console.log(response);
+        console.log(response);
       })
       .catch(err => {
         console.log(err);
+      })
+    },
+    getUsername : function () {
+      this.$emit('user-emit', {
+        username : this.username
       })
     }
 

@@ -9,14 +9,14 @@ html, body, #app {
   text-decoration: line-through;
 }
 
-.round {
+#round {
   position: relative;
   margin-top:  0.5rem;
   margin-right: 1rem;
   margin-left: 2rem
 }
 
-.round label {
+#round label {
   background-color: #fff;
   border: 1px solid #65f442;
   border-radius: 50%;
@@ -28,7 +28,7 @@ html, body, #app {
   width: 28px;
 }
 
-.round label:after {
+#round label:after {
   border: 2px solid #fff;
   border-top: none;
   border-right: none;
@@ -42,16 +42,16 @@ html, body, #app {
   width: 12px;
 }
 
-.round input[type="checkbox"] {
+#round input[type="checkbox"] {
   visibility: hidden;
 }
 
-.round input[type="checkbox"]:checked + label {
+#round input[type="checkbox"]:checked + label {
   background-color: #66bb6a;
   border-color: #66bb6a;
 }
 
-.round input[type="checkbox"]:checked + label:after {
+#round input[type="checkbox"]:checked + label:after {
   opacity: 1;
 }
 
