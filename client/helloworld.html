@@ -11,6 +11,8 @@
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <link rel="stylesheet" href="assets/style.css">
   <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <title>Document</title>
 </head>
 
@@ -78,6 +80,27 @@
        <div class="panel-heading">GET Request</div>
        <div class="panel-body">
          <button class="btn btn-primary" onclick="performGetRequest1()">Get Todos</button>
+         <!-- Modal -->
+ <div class="modal fade" id="myModal" role="dialog">
+   <div class="modal-dialog">
+
+     <!-- Modal content-->
+     <div class="modal-content">
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal">&times;</button>
+         <h4 class="modal-title">Edit Your Task</h4>
+       </div>
+       <div class="modal-body" id="getResult2">
+
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       </div>
+     </div>
+
+   </div>
+ </div>
+
          <button class="btn btn-warning" onclick="clearOutput()">Clear</button>
          <div class="panel-body" id="getResult1"></div>
        </div>
@@ -90,7 +113,7 @@
          <button class="btn btn-warning" onclick="clearOutput()">Clear</button>
          <div class="panel-body" id="getResult2"></div>
        </div>
-     </div>
+     </div> -->
       <div class="panel panel-primary">
        <div class="panel-heading">POST Request</div>
        <div class="panel-body">
@@ -98,12 +121,18 @@
            <div class="form-group">
              <input type="text" class="form-control" id="todoTitle" placeholder="Todo Title ...">
            </div>
-           <button type="submit" class="btn btn-primary">Send</button>
+           <div class="form-group">
+             <input type="text" class="form-control" id="tags" placeholder="Todo Tag ...">
+           </div>
+           <div class="form-group">
+             <input type="text" class="form-control" id="status" placeholder="Todo Status ...">
+           </div>
+           <button type="submit" class="btn btn-primary" id="target">Send</button>
          </form><br/>
          <button class="btn btn-warning" onclick="clearOutput()">Clear</button>
          <div class="panel-body" id="postResult"></div>
        </div>
-     </div> -->
+     </div>
 
      <div class="footer">
        <p>copy <a href="http://codingthesmartway.com" target="_blank">CodingTheSmartWay.com</a> | <a href="http://codingthesmartway.com/imprint" target="_blank">Imprint</a></p>
@@ -123,6 +152,11 @@
       if (token === null) {
           document.location = 'http://localhost:3000/signin.html'
       }
+
+
+
+
+
 
 
 </script>

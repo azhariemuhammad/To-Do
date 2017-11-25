@@ -41,6 +41,7 @@ const create = (req, res) => {
   console.log('masuk');
   let todo = new Todo(
     {
+      list       : req.body.list,
       userId     : req.body.userId,
       task       : req.body.task,
       tags       : req.body.tags,

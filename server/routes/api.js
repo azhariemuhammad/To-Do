@@ -3,6 +3,7 @@ const router  = express.Router()
 const todoController = require('../controller/todo-cont')
 const userController = require('../controller/user-cont')
 const registerController = require('../controller/register-cont')
+const listController = require('../controller/list-cont')
 const verify = require('../middleware/verify')
 
 
@@ -37,6 +38,16 @@ router.post('/users', userController.create)
 router.put('/users/:id', userController.findAndUpdate)
 
 router.delete('/users/:id', userController.findByIdAndRemove)
+
+
+/// ================= List ====================////
+router.get('/list/:userId', listController.findAllList)
+
+router.put('/list/:userId/:id', listController.findAndUpdate)
+
+router.post('/list/:userId', listController.create)
+
+router.delete('/list/:id', listController.findByIdAndRemove)
 
 
 

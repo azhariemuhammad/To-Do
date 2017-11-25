@@ -80,7 +80,7 @@
     FB.api('/me', {  fields : 'id,name, email, picture{url}'}, function(response) {
         console.log(response)
         localStorage.setItem('name', response.name)
-        document.location = 'http://localhost:3000/helloworld.html'
+         window.location = 'http://localhost:8080/helloworld.html'
         createUser(response)
         console.log('Successful login for: ' + response.name);
         document.getElementById('status').innerHTML =

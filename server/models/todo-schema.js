@@ -3,7 +3,8 @@ const Schema = mongoose.Schema
 
 
 const todoSchema = new Schema({
-  userId      : {
+  name       : String,
+  userId     : {
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
