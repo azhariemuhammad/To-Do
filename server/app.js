@@ -30,6 +30,6 @@ app.get('/', function(req, res){
 const api  = require('./routes/api')
 app.use('/api', api)
 
-app.listen(4000, function(err){
+app.listen(3000, function(err){
   if(!err) console.log('woohooo');
 })

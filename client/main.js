@@ -5,7 +5,7 @@
 
 function performGetRequest1() {
   let userId = localStorage.getItem('userId')
-  axios.get(`http://localhost:4000/api/todo/${userId}`)
+  axios.get(`http://localhost:3000/api/todo/${userId}`)
   .then(data => {
     data.data.forEach(item => {
       console.log(item);
@@ -30,7 +30,7 @@ function performGetRequest1() {
   function createUser(fields) {
     console.log('hello');
     console.log('------' + fields.name);
-    axios.post('http://localhost:4000/api/users', {
+    axios.post('http://localhost:3000/api/users', {
       username : fields.name,
       email    : fields.email
     })
@@ -50,7 +50,7 @@ function performGetRequest1() {
     let tags       = $('input#tags')
     let isComplete = $('input#status')
     console.log(task, 'ini task');
-    axios.post('http://localhost:4000/api/todo', {
+    axios.post('http://localhost:3000/api/todo', {
       userId     : userId,
       task       : task.val(),
       tags       : tags.val(),
@@ -71,7 +71,7 @@ function performGetRequest1() {
     let value = d.innerHTML
     let spit  = value.split(' ')
 
-    axios.get(`http://localhost:4000/api/todo/edit/${spit[5]}`)
+    axios.get(`http://localhost:3000/api/todo/edit/${spit[5]}`)
     .then(todo => {
       console.log(todo.data[0].createdAt, 'daper');
       $('#getResult2').html(

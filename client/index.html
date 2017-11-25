@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.css.map">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css.map">
+  <link rel="stylesheet" href="stylesheet.css">
+  <title>Todo</title>
+</head>
+
+<body>
+  <html>
+<body>
+  <div id="app">
+    <nav class="nav has-shadow">
+      <div class="container">
+        <div class="nav-left">
+          <a class="nav-item">
+            Website
+          </a>
+        </div>
+        <label for="menu-toggle" class="nav-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </label>
+        <input type="checkbox" id="menu-toggle" class="is-hidden"/>
+        <div class="nav-right nav-menu">
+          <a class="nav-item is-tab is-hidden-tablet">
+            <span class="icon"><i class="fa fa-home"></i></span> Home
+          </a>
+          <a class="nav-item is-tab is-hidden-tablet">
+            <span class="icon"><i class="fa fa-table"></i></span> Links
+          </a>
+          <a class="nav-item is-tab is-hidden-tablet">
+            <span class="icon"><i class="fa fa-info"></i></span> About
+          </a>
+
+          <a class="nav-item is-tab is-active">
+            <span class="icon"><i class="fa fa-user"></i></span>
+          </a>
+          <a class="nav-item is-tab">
+            <span class="icon"><i class="fa fa-sign-out"></i></span>
+          </a>
+        </div>
+      </div>
+    </nav>
+    <!-- menu bar -->
+    <section class="main-content columns is-fullheight">
+      <aside class="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile">
+        <p class="menu-label is-hidden-touch">Navigation</p>
+        <ul class="menu-list">
+          <li>
+            <a href="#" class="">
+              <span class="icon"><i class="fa fa-home"></i></span> Home
+            </a>
+          </li>
+          <li>
+            <a href="#" class="is-active">
+              <span class="icon"><i class="fa fa-table"></i></span> Links
+            </a>
+
+            <ul>
+              <li>
+                <a href="#">
+                  <span class="icon is-small"><i class="fa fa-link"></i></span> Link1
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon is-small"><i class="fa fa-link"></i></span> Link2
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#" class="">
+              <span class="icon"><i class="fa fa-info"></i></span> About
+            </a>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- content -->
+      <div class="container column is-10">
+
+        <div class="section">
+          <section class="hero is-info welcome is-small">
+            <div class="hero-body">
+              <div class="container">
+                <h1 class="title">
+                  Hello, Admin.
+                </h1>
+                <h2 class="subtitle">
+                  I hope you are having a great day!
+                </h2>
+                <div class="level-right">
+                  <p class="level-item"><strong>Today Weather</strong></p>
+                  <p class="level-item"><a>91 Fahrenheit</a></p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="field">
+            <div class="control">
+              <textarea class="textarea" placeholder="What Are You Doing Today?"></textarea>
+            </div>
+            <div class="field is-grouped">
+              <div class="control">
+                <button class="button is-link">Submit</button>
+              </div>
+              <div class="control">
+                <button class="button is-text">Cancel</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><p class="card-header-title">Header</p></div>
+            <div class="card-content"><div class="content">Content</div></div>
+          </div>
+          <br />
+
+        </div>
+      </div>
+
+    </section>
+
+    <footer class="footer is-hidden">
+      <div class="container">
+        <div class="content has-text-centered">
+          <p>Hello</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
+
+
+</body>
+</html>
