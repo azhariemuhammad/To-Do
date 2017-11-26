@@ -1,7 +1,10 @@
 html, body, #app {
   height: 100%;
 }
-
+.hero-body {
+  padding-bottom: 0px;
+  padding-top: 20px;
+}
 .list.btn, li  {
   color: red;
 }

@@ -20,7 +20,7 @@ Vue.component('todo-lists', {
               </header>
               <div class="card-content">
                 <div class="content">
-                  <time>{{todo.createdAt}}</time>
+                  <time> Create:  {{todo.createdAt}}</time>
                 </div>
               </div>
                 <a class="tag is-delete is-medium" @click.prevent="removeTodo(todo._id)"></a>

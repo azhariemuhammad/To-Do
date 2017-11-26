@@ -32,11 +32,6 @@
   <div id="app">
     <nav class="nav has-shadow">
       <div class="container">
-        <div class="nav-left">
-          <a class="nav-item">
-            Website
-          </a>
-        </div>
         <label for="menu-toggle" class="nav-toggle">
           <span></span>
           <span></span>
@@ -51,7 +46,7 @@
             <span class="icon"><i class="fa fa-table"></i></span> Links
           </a>
           <a class="nav-item is-tab is-hidden-tablet">
-            <span class="icon"><i class="fa fa-info"></i></span> About
+            <span class="icon" @click="logOut"><i class="fa fa-info"></i></span> Logout
           </a>
 
           <a class="nav-item is-tab is-active">
@@ -92,8 +87,8 @@
             </ul>
           </li>
           <li>
-            <a href="#" class="">
-              <span class="icon"><i class="fa fa-info"></i></span> About
+            <a href="http://localhost:8080/client/index.html" @click="logOut">
+              <span class="icon" ><i class="fa fa-info"></i></span> Logout
             </a>
           </li>
         </ul>
@@ -129,7 +124,7 @@
                 <input type="submit" class="button is-link" value="Add a To-Do">
               </div>
               <div class="control">
-                <button class="button is-text">Cancel</button>
+                <button class="button is-link" @click.once="cancelInput" v-on:submit.stop="createNewTodo">Cancel</button>
               </div>
             </div>
           </form>
@@ -157,7 +152,7 @@
       user: '',
       userId : '',
       location: '',
-      temp : ''
+      temp : '',
     },
     created : function () {
       axios.get(`https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22jakarta%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys`)
@@ -190,8 +185,15 @@
         })
       },
       setUserName : function (payload) {
-        console.log(payload, '-0-0-0-0');
         this.user = payload.username
+      },
+      cancelInput : function () {
+        this.task = ''
+      },
+      logOut : function () {
+        localStorage.removeItem('token')
+        localStorage.removeItem('userId')
+        localStorage.removeItem('username')
       }
     }
   })
