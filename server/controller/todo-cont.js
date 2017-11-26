@@ -45,7 +45,7 @@ const create = (req, res) => {
       list       : req.body.list,
       userId     : req.body.userId,
       task       : req.body.task,
-      tags       : req.body.tags,
+      tag       : req.body.tag,
       isComplete : req.body.isComplete
     }
   )

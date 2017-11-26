@@ -9,7 +9,7 @@ const todoSchema = new Schema({
     ref: 'User'
   },
   task       : String,
-  tags       : [{type: String}],
+  tag        : String,
   isComplete : Boolean,
   createdAt  : {
     type     : Date,

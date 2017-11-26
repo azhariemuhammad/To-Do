@@ -12,6 +12,18 @@ html, body, #app {
   text-decoration: line-through;
 }
 
+button[disabled] {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+time {
+  padding-left: 67px;
+}
+
+.card-content {
+  padding: 0.5rem
+}
 #round {
   position: relative;
   margin-top:  0.5rem;

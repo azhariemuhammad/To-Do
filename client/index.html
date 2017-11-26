@@ -26,6 +26,7 @@
         <h1 class="title">
           To-do
         </h1>
+        <img src="https://cdn3.iconfinder.com/data/icons/iconic-1/32/check_alt-128.png" alt="todo" style="height:2rem;">
       </div>
     </div>
   </section>
@@ -64,31 +65,18 @@
         <p class="menu-label is-hidden-touch">Navigation</p>
         <ul class="menu-list">
           <li>
-            <a href="#" class="">
+            <a href="http://localhost:8080/client/index.html" class="">
               <span class="icon"><i class="fa fa-home"></i></span> Home
             </a>
           </li>
-          <li>
-            <a href="#" class="is-active">
-              <span class="icon"><i class="fa fa-table"></i></span> Links
-            </a>
-
-            <ul>
-              <li>
-                <a href="#">
-                  <span class="icon is-small"><i class="fa fa-link"></i></span> Link1
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span class="icon is-small"><i class="fa fa-link"></i></span> Link2
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li>
+          <li v-if="user">
             <a href="http://localhost:8080/client/index.html" @click="logOut">
               <span class="icon" ><i class="fa fa-info"></i></span> Logout
+            </a>
+          </li>
+          <li v-else>
+            <a href="http://localhost:8080/client/signin.html">
+              <span class="icon" ><i class="fa fa-info"></i></span> Login
             </a>
           </li>
         </ul>
@@ -117,14 +105,16 @@
 
           <form v-on:submit.prevent="createNewTodo">
             <div class="control">
-              <textarea class="textarea" v-model="task" placeholder="What Are You Doing Today?"></textarea>
+              <textarea class="textarea is-info" v-model="task" placeholder="What Are You Doing Today?"></textarea>
+            </div>
+            <div class="field">
+              <div class="control">
+                <input class="input is-primary" v-model="tag" type="text" placeholder="Tag">
+              </div>
             </div>
             <div class="field is-grouped">
               <div class="control">
-                <input type="submit" class="button is-link" value="Add a To-Do">
-              </div>
-              <div class="control">
-                <button class="button is-link" @click.once="cancelInput" v-on:submit.stop="createNewTodo">Cancel</button>
+                <input type="submit" class="button is-link" :disabled="taskIsEmpty" value="Add a To-Do">
               </div>
             </div>
           </form>
@@ -153,6 +143,7 @@
       userId : '',
       location: '',
       temp : '',
+      tag: '',
     },
     created : function () {
       axios.get(`https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22jakarta%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys`)
@@ -164,6 +155,11 @@
         console.log(err);
       })
     },
+    computed : {
+      taskIsEmpty : function () {
+        return this.task.length  === 0
+      }
+    },
     methods : {
       createNewTodo : function () {
         let token = localStorage.getItem('token')
@@ -174,6 +170,7 @@
         console.log(this.userId);
         axios.post('http://localhost:3000/api/todo', {
           userId : this.userId,
+          tag : this.tag,
           task : this.task,
           isComplete : false
         })
@@ -186,9 +183,6 @@
       },
       setUserName : function (payload) {
         this.user = payload.username
-      },
-      cancelInput : function () {
-        this.task = ''
       },
       logOut : function () {
         localStorage.removeItem('token')

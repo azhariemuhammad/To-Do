@@ -20,7 +20,7 @@ Vue.component('todo-lists', {
               </header>
               <div class="card-content">
                 <div class="content">
-                  <time> Create:  {{todo.createdAt}}</time>
+                  <time> {{ todo.tag }}</time>
                 </div>
               </div>
                 <a class="tag is-delete is-medium" @click.prevent="removeTodo(todo._id)"></a>
@@ -32,22 +32,19 @@ Vue.component('todo-lists', {
       username: '',
       todos: '',
       isDone : false,
-      userId : ''
-
+      userId : '',
     }
   },
   created : function () {
    let username = localStorage.getItem("username")
    let userId = localStorage.getItem('userId')
-    console.log(username, '----');
     axios.get(`http://localhost:3000/api/todo/${userId}`)
     .then(response => {
-      console.log(response);
         this.username = username
         this.userId  = userId
         this.todos = response.data
-        console.log(this.todos);
         this.getUsername()
+
     })
     .catch(err => {
       console.log(err);
