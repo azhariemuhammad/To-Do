@@ -40,15 +40,20 @@
         </label>
         <input type="checkbox" id="menu-toggle" class="is-hidden"/>
         <div class="nav-right nav-menu">
-          <a class="nav-item is-tab is-hidden-tablet">
+          <a href="http://localhost:8080/client/index.html" class="">
             <span class="icon"><i class="fa fa-home"></i></span> Home
           </a>
           <a class="nav-item is-tab is-hidden-tablet">
             <span class="icon"><i class="fa fa-table"></i></span> Links
           </a>
-          <a class="nav-item is-tab is-hidden-tablet">
-            <span class="icon" @click="logOut"><i class="fa fa-info"></i></span> Logout
+          <a  v-if="user" href="http://localhost:8080/client/index.html" @click="logOut">
+            <span class="icon" ><i class="fa fa-info"></i></span> Logout
           </a>
+          <a v-else href="http://localhost:8080/client/signin.html">
+            <span class="icon" ><i class="fa fa-info"></i></span> Login
+          </a>
+
+
 
           <a class="nav-item is-tab is-active">
             <span class="icon"><i class="fa fa-user"></i></span>
@@ -120,7 +125,7 @@
           </form>
 
              <div class="card">
-                <todo-lists @user-emit="setUserName"/>
+                <todo-lists @user-emit="getTaskId"  :todos="todos"/>
             </div>
 
 
@@ -131,7 +136,6 @@
 
 
   </div>
-  <script src="js/section.js" charset="utf-8"></script>
   <script src="js/list-task.js" charset="utf-8"></script>
   <script type="text/javascript">
 
@@ -144,16 +148,29 @@
       location: '',
       temp : '',
       tag: '',
+      todos : ''
     },
     created : function () {
       axios.get(`https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22jakarta%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys`)
       .then(response => {
-        this.location = response.data.query.results.channel.location.city
-        this.temp = response.data.query.results.channel.item.condition.temp
+        let channel = response.data.query.results.channel
+        this.location = channel.location.city
+        this.temp = channel.item.condition.temp
       })
       .catch(err => {
         console.log(err);
       })
+      let username = localStorage.getItem("username")
+      let userId = localStorage.getItem('userId')
+       axios.get(`http://localhost:3000/api/todo/${userId}`)
+       .then(response => {
+           this.user = username
+           this.userId  = userId
+           this.todos = response.data
+       })
+       .catch(err => {
+         console.log(err);
+       })
     },
     computed : {
       taskIsEmpty : function () {
@@ -162,12 +179,16 @@
     },
     methods : {
       createNewTodo : function () {
+        this.todos.push({
+          userId : this.userId,
+          tag : this.tag,
+          task : this.task,
+          isComplete : false
+        })
         let token = localStorage.getItem('token')
-        this.userId = localStorage.getItem('userId')
         if (token === null) {
             document.location = 'http://localhost:8080/client/signin.html'
         }
-        console.log(this.userId);
         axios.post('http://localhost:3000/api/todo', {
           userId : this.userId,
           tag : this.tag,
@@ -176,18 +197,29 @@
         })
         .then(response => {
             console.log(response);
+            this.cleanTextArea()
         })
         .catch(err => {
           console.log(err);
         })
       },
-      setUserName : function (payload) {
-        this.user = payload.username
-      },
       logOut : function () {
         localStorage.removeItem('token')
         localStorage.removeItem('userId')
         localStorage.removeItem('username')
+      },
+      cleanTextArea : function () {
+        this.task = '',
+        this.tag = ''
+      },
+      getTaskId : function (payload) {
+
+        this.todos.forEach((item, index )=> {
+          if (item._id == payload.taskId) {
+            this.todos.splice(index, 1)
+          }
+        })
+        console.log(payload.taskId);
       }
     }
   })
