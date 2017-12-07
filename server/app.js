@@ -14,7 +14,7 @@ app.use(morgan('dev'))
 app.use(cors())
 
 
-mongoose.connect('mongodb://localhost/todo')
+mongoose.connect(`mongodb://wisnu:123@ds159845.mlab.com:59845/mydb_hacktiv8`)
 mongoose.Promise = global.Promise
 mongoose.connection.once('open', function(){
   console.log('Connection has been made, build todo');
