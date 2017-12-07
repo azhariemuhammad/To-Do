@@ -4,13 +4,13 @@ Vue.component('todo-lists', {
           <div>
             <div class="card" v-for="todo in todos">
               <header class="card-header" >
-                <div id="round">
-                <input type="checkbox" v-model="todo.isComplete" @click="doneTask(todo)" id="checkbox"/>
-                <label for="checkbox"></label>
-                </div>
-                <p class="card-header-title">
-                  <span :class="{ taskDone: todo.isComplete }">{{todo.task}}</span>
-                </p>
+                <div>
+                  <input type="checkbox"  v-model="todo.isComplete" @click="doneTask(todo)" id="checkbox"/>
+                  <label for="checkbox"></label>
+                  </div>
+                  <p class="card-header-title">
+                    <span :class="{ taskDone: todo.isComplete }">{{todo.task}}</span>
+                  </p>
 
                 <a href="#" class="card-header-icon" aria-label="more options">
                   <span class="icon">
@@ -32,7 +32,6 @@ Vue.component('todo-lists', {
   data () {
     return {
       username: '',
-      isDone : false,
       userId : '',
       taskId : ''
     }
@@ -53,13 +52,9 @@ Vue.component('todo-lists', {
       })
     },
     doneTask : function (todo) {
-      this.isDone = !this.isDone
-      axios.put(`http://loc  axios.post('http://localhost:3000/api/todo', {
-          userId : this.userId,
-          tag : this.tag,
-          task : this.task,
-          isComplete : false
-        })alhost:3000/api/todo/${todo._id}`, {
+      axios.put(`http://localhost:3000/api/todo/${todo._id}`, {
+        userId : this.userId,
+        tag : this.tag,
         task : todo.task,
         userId : todo.userId,
         isComplete : this.isDone

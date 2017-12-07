@@ -61,7 +61,7 @@ time {
   visibility: hidden;
 }
 
-#round input[type="checkbox"]:checked + label {
+.selected {
   background-color: #66bb6a;
   border-color: #66bb6a;
 }

@@ -166,7 +166,10 @@
        .then(response => {
            this.user = username
            this.userId  = userId
-           this.todos = response.data
+           this.todos = response.data.map(function (x) {
+             x.selected = false
+             return x
+           })
        })
        .catch(err => {
          console.log(err);
