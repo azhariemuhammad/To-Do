@@ -25,6 +25,13 @@ const mutations = {
     console.log('payload set Todos: ', payload)
     state.todos = payload
   },
+  removeTodo (state, payload) {
+    state.todos.forEach((element, index) => {
+      if (element._id === payload._id) {
+        state.todos.splice(index, 1)
+      }
+    })
+  },
   decode (state, token) {
     const decoded = jwtDecode(token.data)
     localStorage.setItem('username', decoded.username)
@@ -57,6 +64,16 @@ const actions = {
     .then(({ data }) => {
       console.log('newTodo: ', data.todo)
       commit('setNewTodo', data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  },
+  removeTodo ({ commit }, itemId) {
+    http.delete(`/api/todo/${itemId}`)
+    .then(({ data }) => {
+      console.log(data)
+      commit('removeTodo', data.todo)
     })
     .catch(err => {
       console.log(err)

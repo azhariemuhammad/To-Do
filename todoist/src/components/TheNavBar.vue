@@ -9,15 +9,29 @@
           
           <img src="https://cdn3.iconfinder.com/data/icons/iconic-1/32/check_alt-128.png" alt="todo" style="height:2rem;">
         </li>
-        <li>Logout</li>
+        <li>
+          <button @click="logoutBtn"></button>
+        </li>
       </ul>
     </nav>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
-  name: 'TheNavbBar'
+  name: 'TheNavbBar',
+  data () {
+    return {}
+  },
+  methods: {
+    ...mapActions([
+      'logout'
+    ]),
+    logoutBtn () {
+      this.logout()
+    }
+  }
 }
 </script>
 

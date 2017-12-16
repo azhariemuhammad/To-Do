@@ -21,7 +21,7 @@
             <time> {{ todo.tag }}</time>
           </div>
         </div>
-          <a class="tag is-delete is-medium" @click.prevent="removeTodo(todo._id)"></a>
+          <a class="tag is-delete is-medium" @click.prevent="removeItem(todo._id)"></a>
       </div>
     </div>
 </template>
@@ -43,8 +43,12 @@ export default {
   },
   methods: {
     ...mapActions([
-      'getAllTodos'
-    ])
+      'getAllTodos',
+      'removeTodo'
+    ]),
+    removeItem: function (id) {
+      this.removeTodo(id)
+    }
   },
   created () {
     console.log('getAllTodos')
