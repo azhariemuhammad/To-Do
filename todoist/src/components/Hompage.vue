@@ -12,7 +12,7 @@
             <div class="hero-body">
               <div class="container">
                 <h1 class="title">
-                  Hello
+                  Hello  {{ user }}
                 </h1>
                 <h2 class="subtitle">
                   I hope you are having a great day!
@@ -40,9 +40,20 @@
 import TheNavBar from './TheNavBar'
 import TodoContent from './TodoContent'
 import TodoForm from './TodoForm'
+import { mapState } from 'vuex'
 export default {
   name: 'Hompage',
-  components: { TheNavBar, TodoForm, TodoContent }
+  components: { TheNavBar, TodoForm, TodoContent },
+  data () {
+    return {
+      user: localStorage.getItem('username')
+    }
+  },
+  computed: {
+    ...mapState([
+      'username'
+    ])
+  }
 
 }
 </script>

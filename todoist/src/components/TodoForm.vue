@@ -1,6 +1,6 @@
 <template>
   <div>
-      <form>
+      <form @submit.prevent="createTodo(todoForm)">
         <div class="control">
           <textarea class="textarea is-info" v-model="todoForm.task"placeholder="What Are You Doing Today?"></textarea>
         </div>
@@ -19,17 +19,23 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'TodoForm',
   data () {
     return {
       todoForm: {
         task: '',
-        tag: ''
+        tag: '',
+        userId: localStorage.getItem('userId')
       }
     }
   },
-  methods: {}
+  methods: {
+    ...mapActions([
+      'createTodo'
+    ])
+  }
 }
 </script>
 

@@ -10,13 +10,19 @@ const http = axios.create({
 Vue.use(Vuex)
 const state = {
   todos: [],
-  username: ''
+  username: '',
+  userId: ''
 }
 
 const getters = {}
 
 const mutations = {
+  setNewTodo (state, payload) {
+    console.log(payload)
+    state.todos.push(payload.todo)
+  },
   setTodos (state, payload) {
+    console.log('payload set Todos: ', payload)
     state.todos = payload
   },
   decode (state, token) {
@@ -25,13 +31,37 @@ const mutations = {
     localStorage.setItem('email', decoded.email)
     localStorage.setItem('userId', decoded.userId)
     state.username = decoded.username
+    state.userId = decoded.userId
     console.log(decoded)
   }
 }
 const actions = {
-  // getAllTodos ({ commit }, dataUser) {
-  //   http.get('/api/')
-  // }
+  getAllTodos ({ commit }, dataUser) {
+    console.log('hello', this.userId)
+    http.get(`/api/todo/${dataUser}`)
+    .then(({ data }) => {
+      console.log('data: ', data)
+      commit('setTodos', data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  },
+  createTodo ({ commit }, formTodo) {
+    http.post(`/api/todo`, {
+      userId: formTodo.userId,
+      task: formTodo.task,
+      tag: formTodo.tag,
+      isComplete: false
+    })
+    .then(({ data }) => {
+      console.log('newTodo: ', data.todo)
+      commit('setNewTodo', data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  },
   login ({ commit }, username) {
     http.post(`/api/login`, {
       username: username,

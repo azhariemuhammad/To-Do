@@ -39,14 +39,13 @@ const findOne = (req, res) => {
 
 //create one todo using method save
 const create = (req, res) => {
-  console.log('masuk');
+  console.log('masuk', req.body);
   let todo = new Todo(
     {
-      list       : req.body.list,
-      userId     : req.body.userId,
-      task       : req.body.task,
-      tag       : req.body.tag,
-      isComplete : req.body.isComplete
+      userId: req.body.userId,
+      task: req.body.task,
+      tag: req.body.tag,
+      isComplete: req.body.isComplete
     }
   )
   todo.save()
