@@ -7,64 +7,29 @@ const secret = process.env.SECRET_KEY
 
 
 
-const signin = (req, res) => {
-  User.findOne({username : req.body.username})
-  .then(user => {
-    console.log(user);
-    if (user) {
-      bcrypt.compare(req.body.password, user.password, function(err, hash) {
-        if (!err) {
-          jwt.sign(
-            {
-              id       : user._id,
-              username : user.username,
-            }, secret, {expiresIn : '1h'}, (err, token) => {
-              if (err) {
-                console.log(err);
-              } else {
-                console.log(token);
-                res.send(token)
-              }
-            }
-          )
-        } else {
-          res.status(404).send('Password or Email wrong')
-        }
-      })
-    }
-  })
-}
-
-
-
-const signup = (req, res) => {
-  let password = req.body.password
-  bcrypt.hash(password, saltRounds, function(err, hash) {
+const login = (req, res) => {
+  console.log(req.body, '-----')
+  User.findOrCreate({ username: req.body.username }, { email: req.body.email}, (err, result) => {
     if (!err) {
-      console.log('hash of the password is ' + hash);
-      storehash = hash;
-      User.create(
-        {
-          username  : req.body.username,
-          email     : req.body.email,
-          password  : hash
-        }
-      )
-      .then(user => {
-        console.log(user);
-        msg = 'succes create new user'
-        res.status(201).send({user:user, message:msg})
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(200).send(err)
-      })
+      console.log('ressult: ', result)
+      let payload = {
+        userId: result._id,
+        username: result.username,
+        email: result.email
+      }
+      let token = jwt.sign(payload, secret)
+      console.log(token, 'ini token server')
+      res.status(200).send(token)
+    } else {
+      res.status(500).send({ msg: 'wrong input', err: err })
     }
   })
 }
+
+
+
 
 
 module.exports = {
-  signin,
-  signup
+  login
 };

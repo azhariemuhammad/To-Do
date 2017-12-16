@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-// import jwtDecode from 'jwt_decode'
+import jwtDecode from 'jwt-decode'
 
 const http = axios.create({
   baseURL: 'http://localhost:3000'
@@ -9,7 +9,8 @@ const http = axios.create({
 
 Vue.use(Vuex)
 const state = {
-  todos: []
+  todos: [],
+  username: ''
 }
 
 const getters = {}
@@ -19,7 +20,12 @@ const mutations = {
     state.todos = payload
   },
   decode (state, token) {
-    console.log(token)
+    const decoded = jwtDecode(token.data)
+    localStorage.setItem('username', decoded.username)
+    localStorage.setItem('email', decoded.email)
+    localStorage.setItem('userId', decoded.userId)
+    state.username = decoded.username
+    console.log(decoded)
   }
 }
 const actions = {
@@ -27,13 +33,16 @@ const actions = {
   //   http.get('/api/')
   // }
   login ({ commit }, username) {
-    http.post('/api/signin', {
-      username: username
+    http.post(`/api/login`, {
+      username: username,
+      email: 'wisnu2@mail.com'
     })
-    .then(({ res }) => {
+    .then(res => {
       commit('decode', res)
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+    })
   }
 }
 
