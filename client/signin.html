@@ -74,20 +74,20 @@
 
 
 
-        axios.get(`http://localhost:3000/api/users/${response.name}`)
+        axios.get(`http://35.187.224.235/api/users/${response.name}`)
         .then(response => {
           console.log(response.data[0].username, 'jsdoigjiosergjioesrgoijersiogjs');
           setStorage(response.data)
-           window.location = 'http://localhost:8080/client/index.html'
+           window.location = 'http://todo-ist.s3-website-ap-southeast-1.amazonaws.com/client/index.html'
         })
         .catch(err => {
-          axios.post(`http://localhost:3000/api/users` ,{
+          axios.post(`http://35.187.224.235/api/users` ,{
             username : response.name,
             email : response.email
           })
           .then(response => {
             setStorage(response.data)
-             window.location = 'http://localhost:8080/client/index.html'
+             window.location = 'http://todo-ist.s3-website-ap-southeast-1.amazonaws.com/client/index.html'
             console.log(response, 'shdfioash');
           })
           .catch(err => {

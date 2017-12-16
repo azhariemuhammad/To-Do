@@ -43,7 +43,7 @@ Vue.component('todo-lists', {
     removeTodo : function (TaskID) {
       this.taskId = TaskID
       this.sendTaskId()
-      axios.delete(`http://localhost:3000/api/todo/${TaskID}`)
+      axios.delete(`http://35.187.224.235/api/todo/${TaskID}`)
       .then(response => {
         console.log(response);
       })
@@ -52,7 +52,7 @@ Vue.component('todo-lists', {
       })
     },
     doneTask : function (todo) {
-      axios.put(`http://localhost:3000/api/todo/${todo._id}`, {
+      axios.put(`http://35.187.224.235/api/todo/${todo._id}`, {
         userId : this.userId,
         tag : this.tag,
         task : todo.task,

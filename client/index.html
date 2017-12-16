@@ -40,16 +40,16 @@
         </label>
         <input type="checkbox" id="menu-toggle" class="is-hidden"/>
         <div class="nav-right nav-menu">
-          <a href="http://localhost:8080/client/index.html" class="">
+          <a href="/" class="">
             <span class="icon"><i class="fa fa-home"></i></span> Home
           </a>
           <a class="nav-item is-tab is-hidden-tablet">
             <span class="icon"><i class="fa fa-table"></i></span> Links
           </a>
-          <a  v-if="user" href="http://localhost:8080/client/index.html" @click="logOut">
+          <a  v-if="user" href="/" @click="logOut">
             <span class="icon" ><i class="fa fa-info"></i></span> Logout
           </a>
-          <a v-else href="http://localhost:8080/client/signin.html">
+          <a v-else href="signin.html">
             <span class="icon" ><i class="fa fa-info"></i></span> Login
           </a>
 
@@ -70,17 +70,17 @@
         <p class="menu-label is-hidden-touch">Navigation</p>
         <ul class="menu-list">
           <li>
-            <a href="http://localhost:8080/client/index.html" class="">
+            <a href="/" class="">
               <span class="icon"><i class="fa fa-home"></i></span> Home
             </a>
           </li>
           <li v-if="user">
-            <a href="http://localhost:8080/client/index.html" @click="logOut">
+            <a href="/" @click="logOut">
               <span class="icon" ><i class="fa fa-info"></i></span> Logout
             </a>
           </li>
           <li v-else>
-            <a href="http://localhost:8080/client/signin.html">
+            <a href="signin.html">
               <span class="icon" ><i class="fa fa-info"></i></span> Login
             </a>
           </li>
@@ -162,7 +162,7 @@
       })
       let username = localStorage.getItem("username")
       let userId = localStorage.getItem('userId')
-       axios.get(`http://localhost:3000/api/todo/${userId}`)
+       axios.get(`http://35.187.224.235/api/todo/${userId}`)
        .then(response => {
            this.user = username
            this.userId  = userId
@@ -190,9 +190,9 @@
         })
         let token = localStorage.getItem('token')
         if (token === null) {
-            document.location = 'http://localhost:8080/client/signin.html'
+            document.location = 'http://todo-ist.s3-website-ap-southeast-1.amazonaws.com/client/signin.html'
         }
-        axios.post('http://localhost:3000/api/todo', {
+        axios.post('http://35.187.224.235/api/todo', {
           userId : this.userId,
           tag : this.tag,
           task : this.task,
