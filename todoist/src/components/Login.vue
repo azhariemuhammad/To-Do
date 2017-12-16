@@ -14,12 +14,14 @@ export default {
   },
   methods: {
     ...mapActions([
-      'login'
+      'login',
+      'logout'
     ]),
     loginBtn: function () {
-      this.login('foo')
       this.$router.push('/')
+      this.login('foo')
     }
+
 //     fbLogin: function () {
 //       console.log('hello')
 //       FB.login(function (response) {

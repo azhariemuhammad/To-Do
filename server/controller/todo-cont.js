@@ -62,6 +62,7 @@ const create = (req, res) => {
 
 const findAndUpdate = (req, res) => {
   //decoded = jwt.decode(req.headers.token)
+  console.log('findAndUpdate', req.body)
   Todo.findByIdAndUpdate(
     {_id : req.params.id},
     {
@@ -69,7 +70,7 @@ const findAndUpdate = (req, res) => {
       task       : req.body.task,
       tags       : req.body.tags,
       isComplete : req.body.isComplete
-    }
+    }, {new: true}
   )
   .then(newtodo => {
     msg = 'succes update one data'

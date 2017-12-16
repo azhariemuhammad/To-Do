@@ -25,6 +25,14 @@ const mutations = {
     console.log('payload set Todos: ', payload)
     state.todos = payload
   },
+  replaceNewTodo (state, { newtodo }) {
+    console.log(newtodo)
+    state.todos.forEach((element, index) => {
+      if (element._id === newtodo._id) {
+        state.todos[index] = newtodo
+      }
+    })
+  },
   removeTodo (state, payload) {
     state.todos.forEach((element, index) => {
       if (element._id === payload._id) {
@@ -68,6 +76,20 @@ const actions = {
     .catch(err => {
       console.log(err)
     })
+  },
+  updateTodo ({ commit }, todo) {
+    console.log('todo update: ', todo.isComplete)
+    http.put(`/api/todo/${todo._id}`, {
+      userId: todo.userId,
+      task: todo.task,
+      tag: todo.tag,
+      isComplete: todo.isComplete
+    })
+    .then(({data}) => {
+      console.log('data jadi:', data)
+      commit('replaceNewTodo', data)
+    })
+    .catch(err => console.log(err))
   },
   removeTodo ({ commit }, itemId) {
     http.delete(`/api/todo/${itemId}`)

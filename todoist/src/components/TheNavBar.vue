@@ -10,7 +10,7 @@
           <img src="https://cdn3.iconfinder.com/data/icons/iconic-1/32/check_alt-128.png" alt="todo" style="height:2rem;">
         </li>
         <li>
-          <button @click="logoutBtn"></button>
+          <button @click="logoutBtn">Logout</button>
         </li>
       </ul>
     </nav>
@@ -18,18 +18,15 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 export default {
   name: 'TheNavbBar',
   data () {
-    return {}
+    return {
+    }
   },
   methods: {
-    ...mapActions([
-      'logout'
-    ]),
-    logoutBtn () {
-      this.logout()
+    logoutBtn: function () {
+      localStorage.removeItem('userId')
     }
   }
 }

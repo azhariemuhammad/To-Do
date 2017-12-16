@@ -3,7 +3,7 @@
       <div class="card" v-for="todo in todos">
         <header class="card-header" >
           <div>
-            <input type="checkbox"  v-model="todo.isComplete" @click="doneTask(todo)" id="checkbox"/>
+            <input type="checkbox"  v-model="todo.isComplete" @click="doneTask(todo)" id="todo._id"/>
             <label for="checkbox"></label>
             </div>
             <p class="card-header-title">
@@ -32,7 +32,11 @@ export default {
   name: 'TodoContent',
   data () {
     return {
-
+      todo: {
+        task: '',
+        tag: '',
+        isComplete: ''
+      }
     }
   },
   computed: {
@@ -44,10 +48,15 @@ export default {
   methods: {
     ...mapActions([
       'getAllTodos',
-      'removeTodo'
+      'removeTodo',
+      'updateTodo'
     ]),
     removeItem: function (id) {
       this.removeTodo(id)
+    },
+    doneTask: function (todoist) {
+      console.log('todois', todoist)
+      this.updateTodo(todoist)
     }
   },
   created () {
@@ -57,6 +66,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+.taskDone {
+  text-decoration: line-through;
+}
 
 </style>

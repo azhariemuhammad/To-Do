@@ -1,6 +1,6 @@
 <template>
   <div>
-      <form @submit.prevent="createTodo(todoForm)">
+      <form @submit.prevent="createTodo(todoForm)" v-on:keyup.enter="createTodo(todoForm)">
         <div class="control">
           <textarea class="textarea is-info" v-model="todoForm.task"placeholder="What Are You Doing Today?"></textarea>
         </div>
