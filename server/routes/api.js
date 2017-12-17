@@ -5,13 +5,17 @@ const userController = require('../controller/user-cont')
 const registerController = require('../controller/register-cont')
 const listController = require('../controller/list-cont')
 const verify = require('../middleware/verify')
+const { createFaceListId, addingFaceId, getFacelist, faceDetect, findSimilars } = require('../middleware/facialDetection')
 var cors = require('cors')
 
 
 /// ================= register ====================////
-router.post('/login', registerController.login)
+// router.post('/login', registerController.login)
+router.post('/facialdetect', createFaceListId, getFacelist, addingFaceId)
 
+router.post('/facedetection', faceDetect)
 
+router.post('/findsimilars', findSimilars)
 
 
 /// ================= todo ====================////
