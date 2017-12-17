@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^0.17.1",
     "fb": "^2.0.0",
+    "firebase": "^4.8.0",
     "jwt-decode": "^2.2.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",

@@ -7,6 +7,18 @@
 </template>
 
 <script>
+ /* eslint-disable */ 
+import firebase from 'firebase'
+var config = {
+  apiKey: 'AIzaSyA6tkCsALPbiLlw038YHJ0izByVMcNgwU8',
+  authDomain: 'vue-project-1a9b9.firebaseapp.com',
+  databaseURL: 'https://vue-project-1a9b9.firebaseio.com',
+  projectId: 'vue-project-1a9b9',
+  storageBucket: 'vue-project-1a9b9.appspot.com',
+  messagingSenderId: '889735417412'
+}
+
+firebase.initializeApp(config)
 export default {
   name: 'WebCam',
   data () {
@@ -31,7 +43,7 @@ export default {
     },
     screenshotFormat: {
       type: String,
-      default: 'image/jpeg'
+      default: 'image/png'
     }
   },
   mounted () {
@@ -81,10 +93,47 @@ export default {
       }
       const { ctx, canvas } = this
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
-      let imageDataURL = canvas.toDataURL('image/jpeg', 1.0)
+      let imageDataURL = canvas.toDataURL('image/png')
       console.log(imageDataURL)
+      this.uploadFile(imageDataURL)
       document.querySelector('#dl-btn').href = imageDataURL
       return canvas
+    },
+    uploadFile (imgDataUrl) {
+      let storageRef = firebase.storage().ref()
+      var uploadTask = storageRef.child('images/foobar.png').putString(imgDataUrl, 'data_url')
+      // Listen for state changes, errors, and completion of the upload.
+      uploadTask.on('state_changed', function(snapshot) {
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          console.log('Upload is ' + progress + '% done')
+        switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+            console.log('Upload is paused')
+              break
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+            console.log('Upload is running')
+              break
+          }
+        }, function (error) {
+        // A full list of error codes is available at
+        // https://firebase.google.com/docs/storage/web/handle-errors
+        switch (error.code) {
+            case 'storage/unauthorized':
+              // User doesn't have permission to access the object
+              break
+            case 'storage/canceled':
+              // User canceled the upload
+              break
+             case 'storage/unknown':
+              // Unknown error occurred, inspect error.serverResponse
+              break
+          }
+        }, function () {
+        // Upload completed successfully, now we can get the download URL
+          var downloadURL = uploadTask.snapshot.downloadURL
+          console.log('downLoadURL: ', downloadURL)
+        })
     }
   }
 }
