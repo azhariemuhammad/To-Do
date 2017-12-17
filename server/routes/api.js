@@ -9,9 +9,9 @@ var cors = require('cors')
 
 
 /// ================= register ====================////
-router.post('/signin', registerController.signin)
+router.post('/login', registerController.login)
 
-router.post('/signup', registerController.signup)
+
 
 
 /// ================= todo ====================////

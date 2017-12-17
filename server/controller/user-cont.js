@@ -15,6 +15,7 @@ const findAllUsers = (req, res) => {
 }
 
 const findOne = (req, res) => {
+  console.log(req.params.username)
   User.find({username: req.params.username}).then(users => {
     res.status(200).send(users)
   })
@@ -97,6 +98,8 @@ const findByIdAndRemove = (req, res) => {
     res.status(500).send(error)
   })
 }
+
+
 
 
 module.exports = {
