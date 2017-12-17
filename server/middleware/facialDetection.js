@@ -6,14 +6,14 @@ const facialKey = process.env.Opc_APIM_SUBCRIPTIONS_KEY
 const faceListName = 'kookaburra'
 require('dotenv').config()
 
-const createFaceListId = (req, res, next) => {
+const createFaceListId = (req, response, next) => {
   axios.put(URL + faceListName, {
     name: req.body.name,
     userData: req.body.userData
   }, {
     headers: {
       "Content-Type": "application/json",
-      "Ocp-Apim-Subscription-Key": "5a95fb4811864b1e8826dbf79285d2b5"
+      "Ocp-Apim-Subscription-Key": facialKey
     }})
   .then(res => {
     console.log('result Facial List: ', res.headers)
@@ -21,14 +21,15 @@ const createFaceListId = (req, res, next) => {
   })
   .catch(err => {
     console.log('err createFaceListId', err)
+    response.status(500).send({ msg: err })
   })
 }
 
-const getFacelist = (req, res, next) => {
+const getFacelist = (req, response, next) => {
   axios.get(URL, {
     headers: {
       "Content-Type": "application/json",
-      "Ocp-Apim-Subscription-Key": "5a95fb4811864b1e8826dbf79285d2b5"
+      "Ocp-Apim-Subscription-Key": facialKey
     }
   })
   .then(res => {
@@ -37,45 +38,49 @@ const getFacelist = (req, res, next) => {
   })
   .catch(err => {
     console.log('err getFacelist: ', err)
+    response.status(500).send({ msg: err })
   })
   
 }
 
-const addingFaceId = (req, res) => {
+const addingFaceId = (req, response) => {
   axios.post(URL + faceListName + `/persistedFaces?userData=${req.body.username}`, {
     url: req.body.url
   }, {
     headers: {
       "Content-Type": "application/json",
-      "Ocp-Apim-Subscription-Key": "5a95fb4811864b1e8826dbf79285d2b5"
+      "Ocp-Apim-Subscription-Key": facialKey
     }})
   .then(res => {
     console.log('added FaceId: ', res)
-    return res.data
+    response.status(200).send({ data: res.data, msg: 'succes adding persistedFaceId' })
   })
   .catch(err => {
     console.log('err addingFaceId ', err)
+    response.status(500).send({ msg: err })
   })
 }
 
-const faceDetect = (req, res, next) => {
+const faceDetect = (req, response, next) => {
   axios.post(URL_FaceId, {
     url: req.body.url
   },{
     headers: {
       "Content-Type": "application/json",
-      "Ocp-Apim-Subscription-Key": "5a95fb4811864b1e8826dbf79285d2b5"
+      "Ocp-Apim-Subscription-Key": facialKey
     }
   })
   .then(res => {
     console.log('faceDetect: ', res.data)
+    response.status(200).send({ data: res.data, msg: 'succes create faceId'})
   })
   .catch(err => {
     console.log('err facedetect: ', err)
+    response.status(500).send({msg: err})
   })
 }
 
-const findSimilars = (req, res) => {
+const findSimilars = (req, response) => {
   axios.post(URL_FindSimilars, {
     'faceId': req.body.faceId,
     'faceListId': faceListName,
@@ -84,14 +89,20 @@ const findSimilars = (req, res) => {
   }, {
     headers: {
       "Content-Type": "application/json",
-      "Ocp-Apim-Subscription-Key": "5a95fb4811864b1e8826dbf79285d2b5"
+      "Ocp-Apim-Subscription-Key": facialKey
     }
   })
   .then(res => {
     console.log('findSimilars: ', res.data)
+    if (res.data.length === 0) {
+      response.status(200).send({ data: res.data, msg: 'no matched' })
+    } else {
+      response.status(200).send({ data: res.data, msg: 'matched' })
+    }
   })
   .catch(err => {
     console.log('err findsimilars: ', err)
+    response.status(500).send({ msg: err })
   })
 }
 

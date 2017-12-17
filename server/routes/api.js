@@ -10,8 +10,11 @@ var cors = require('cors')
 
 
 /// ================= register ====================////
-// router.post('/login', registerController.login)
+router.post('/login', registerController.login)
+
 router.post('/facialdetect', createFaceListId, getFacelist, addingFaceId)
+
+router.post('/addingfaceid', addingFaceId)
 
 router.post('/facedetection', faceDetect)
 
