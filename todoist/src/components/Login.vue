@@ -1,16 +1,38 @@
 <template>
+<div>
   <button id="fbLogin" @click="loginBtn">FB Login</button>
+<!--   
+  <div class="camera">
+    <video id="video" ref="video">Video stream not available.</video>
+    <button id="startbutton">Take photo</button>
+  </div>
+
+  <canvas id="canvas" ref="canvas">
+  </canvas>
+  <div class="output">
+    <img id="photo" alt="The screen capture will appear in this box." ref="photo"> 
+  </div> -->
+     <div id="app" class="component">
+      <webcam ref="webcam"></webcam>
+      <img :src="this.photo" style="width:500px;height:500px;" />
+      <button type="button" @click="take_photo">Capture Photo</button>
+    </div>
+</div>
+  
 </template>
 
 <script>
 /* eslint-disable */
-
+import webcam from './WebCam'
 import { mapActions } from 'vuex'
 import FB from 'fb'
 export default {
   name: 'Login',
+  components: {webcam},
   data: function () {
-    return {}
+    return {
+      photo: null
+    }
   },
   methods: {
     ...mapActions([
@@ -20,42 +42,12 @@ export default {
     loginBtn: function () {
       this.$router.push('/')
       this.login('foo')
+    },
+    take_photo: function () {
+      this.photo = this.$refs.webcam.capture()
     }
-
-//     fbLogin: function () {
-//       console.log('hello')
-//       FB.login(function (response) {
-//         console.log('Response: ', response)
-//       }, { scope: 'public_profile, email' })
-
-     
-//       (function (d, s, id) {
-//         var js, fjs = d.getElementsByTagName(s)[0]
-//         if (d.getElementById(id)) return
-//         js = d.createElement(s); js.id = id
-//         js.src = "https://connect.facebook.net/en_US/sdk.js"
-//         fjs.parentNode.insertBefore(js, fjs)
-//       }(document, 'script', 'facebook-jssdk'))
-
-//       FB.api('/me', function (response) {
-//         console.log('testAPI', response)
-//         console.log('Successful login for: ' + response.name)
-//       })
-//     }
-//   }
-  
-// }
-//  window.fbAsyncInit = function () {
-//         FB.init({
-//           appId: '1826927694265932',
-//           cookie: true,  // enable cookies to allow the server to access
-//           // the session
-//           xfbml: true,  // parse social plugins on this page
-//           version: 'v2.11' // use graph api version 2.8
-//         })
-//       }
   }
-  }
+}
 </script>
 
 <style>
