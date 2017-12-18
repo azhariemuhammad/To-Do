@@ -4,6 +4,7 @@ const saltRounds = 10;
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const secret = process.env.SECRET_KEY
+const { createFaceListId, addingFaceId } = require('../middleware/facialDetection')
 
 
 

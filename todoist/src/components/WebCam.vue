@@ -8,6 +8,9 @@
 
 <script>
  /* eslint-disable */ 
+import randomWord from 'get-unique-name'
+import { mapActions } from 'vuex'
+import axios from 'axios'
 import firebase from 'firebase'
 var config = {
   apiKey: 'AIzaSyA6tkCsALPbiLlw038YHJ0izByVMcNgwU8',
@@ -25,7 +28,9 @@ export default {
     return {
       stream: '',
       source: '',
-      canvas: null
+      canvas: null,
+      url: '',
+      id: ''
     }
   },
   props: {
@@ -65,6 +70,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'addingFaceId'
+    ]),
     hasMedia () {
       return !!this.getMedia()
     },
@@ -99,10 +107,12 @@ export default {
       document.querySelector('#dl-btn').href = imageDataURL
       return canvas
     },
-    uploadFile (imgDataUrl) {
+    uploadFile (imgDataUrl, cb) {
+      let fileName = randomWord()
+      console.log(fileName,'peratam')
       let storageRef = firebase.storage().ref()
-      var uploadTask = storageRef.child('images/foobar.png').putString(imgDataUrl, 'data_url')
-      // Listen for state changes, errors, and completion of the upload.
+      var uploadTask = storageRef.child(`images/${fileName}.png`).putString(imgDataUrl, 'data_url')
+      this.postFace(fileName)
       uploadTask.on('state_changed', function(snapshot) {
           // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
@@ -116,25 +126,48 @@ export default {
               break
           }
         }, function (error) {
-        // A full list of error codes is available at
-        // https://firebase.google.com/docs/storage/web/handle-errors
         switch (error.code) {
             case 'storage/unauthorized':
-              // User doesn't have permission to access the object
               break
             case 'storage/canceled':
-              // User canceled the upload
               break
              case 'storage/unknown':
-              // Unknown error occurred, inspect error.serverResponse
               break
           }
         }, function () {
-        // Upload completed successfully, now we can get the download URL
           var downloadURL = uploadTask.snapshot.downloadURL
           console.log('downLoadURL: ', downloadURL)
         })
-    }
+    },
+    postFace (fileName) {
+      const URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0/facelists/'
+      let self = this
+      setTimeout( () => {
+        let storageRef = firebase.storage().ref()
+        storageRef.child(`images/${fileName}.png`).getDownloadURL().then(function(url) {
+          console.log('url ', url)
+          axios.post(URL + 'kookaburra' + `/persistedFaces?userData=${fileName}`, {
+            url: url
+          }, {
+            headers: {
+              "Content-Type": "application/json",
+              "Ocp-Apim-Subscription-Key": 'd7e51a262fde430e8e62554eac309e82'
+            }})
+          .then(({data}) => {
+            console.log('added FaceId: ', data)
+            self.id = data.persistedFaceId
+          })
+          .catch(err => {
+            console.log('err addingFaceId ', err)
+            // response.status(500).send({ msg: err })
+          })
+        }).catch(function(error) {
+          // Handle any errors
+          console.log('err', error)
+        })
+      }, 5000)
+    },
+
   }
 }
 </script>

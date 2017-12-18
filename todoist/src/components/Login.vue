@@ -1,21 +1,19 @@
 <template>
 <div>
+  
+  <form @submit.prevent="loginBtn">
+    <label for="Username"></label>
+    <input type="text" v-model="user.username" placeholder="username">
+    <br>
+    <label for="Email"></label>
+    <input type="text" v-model="user.email" placeholder="email">
+    <input type="submit" name="submit" value="submit">
+  </form>
   <button id="fbLogin" @click="loginBtn">FB Login</button>
-<!--   
-  <div class="camera">
-    <video id="video" ref="video">Video stream not available.</video>
-    <button id="startbutton">Take photo</button>
-  </div>
-
-  <canvas id="canvas" ref="canvas">
-  </canvas>
-  <div class="output">
-    <img id="photo" alt="The screen capture will appear in this box." ref="photo"> 
-  </div> -->
      <div id="app" class="component">
       <webcam ref="webcam"></webcam>
-      <img :src="this.photo" style="width:500px;height:500px;" />
-      <button type="button" @click="take_photo">Capture Photo</button>
+      <img :src="this.photo" style="width:300px;height:300px; display:none"/>
+      <!-- <button type="button" @click="take_photo">Capture Photo</button> -->
     </div>
 </div>
   
@@ -31,7 +29,11 @@ export default {
   components: {webcam},
   data: function () {
     return {
-      photo: null
+      photo: null,
+      user: {
+        username: '',
+        email: ''
+      }
     }
   },
   methods: {
@@ -40,8 +42,10 @@ export default {
       'logout'
     ]),
     loginBtn: function () {
-      this.$router.push('/')
-      this.login('foo')
+      this.login
+      this.$router.push({name: 'Hompage'})
+      this.take_photo()
+      // this.login(user)
     },
     take_photo: function () {
       this.photo = this.$refs.webcam.capture()

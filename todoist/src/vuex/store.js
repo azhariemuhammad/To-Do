@@ -11,7 +11,11 @@ Vue.use(Vuex)
 const state = {
   todos: [],
   username: '',
-  userId: ''
+  userId: '',
+  user: {
+    username: '',
+    email: ''
+  }
 }
 
 const getters = {}
@@ -101,16 +105,35 @@ const actions = {
       console.log(err)
     })
   },
-  login ({ commit }, username) {
+  login ({ commit }, user) {
     http.post(`/api/login`, {
-      username: username,
-      email: 'wisnu2@mail.com'
+      username: user.username,
+      email: user.email
     })
     .then(res => {
       commit('decode', res)
     })
     .catch(err => {
       console.log(err)
+    })
+  },
+  addingFaceId ({ commit }, file) {
+    axios.post(URL + 'kookaburra' + `/persistedFaces?userData=${file.fileName}`, {
+      url: file.url
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Ocp-Apim-Subscription-Key': '5a95fb4811864b1e8826dbf79285d2b5'
+      }
+    })
+    .then(res => {
+      console.log('added FaceId: ', res)
+      console.log(this, '===-=--=-')
+      // response.status(200).send({ data: res.data, msg: 'succes adding persistedFaceId' })
+    })
+    .catch(err => {
+      console.log('err addingFaceId ', err)
+      // response.status(500).send({ msg: err })
     })
   }
 }
