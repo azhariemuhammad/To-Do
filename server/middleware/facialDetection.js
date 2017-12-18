@@ -92,7 +92,9 @@ const faceDetect = (req, response, next) => {
   })
   .then(res => {
     console.log('faceDetect: ', res.data)
-    response.status(200).send({ data: res.data, msg: 'succes create faceId'})
+    req.body.faceId = res.data[0].faceId
+    next()
+    // response.status(200).send({ data: res.data, msg: 'succes create faceId'})
   })
   .catch(err => {
     console.log('err facedetect: ', err)

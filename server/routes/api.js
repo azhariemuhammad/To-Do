@@ -6,7 +6,7 @@ const registerController = require('../controller/register-cont')
 const listController = require('../controller/list-cont')
 const verify = require('../middleware/verify')
 const { createFaceListId, addingFaceId, getFacelist, faceDetect, findSimilars } = require('../middleware/facialDetection')
-var cors = require('cors')
+
 
 
 /// ================= register ====================////
@@ -16,7 +16,7 @@ router.post('/facialdetect', createFaceListId, getFacelist, addingFaceId)
 
 router.post('/addingfaceid', addingFaceId)
 
-router.post('/facedetection', faceDetect)
+router.post('/facedetection', faceDetect, findSimilars)
 
 router.post('/findsimilars', findSimilars)
 

@@ -107,7 +107,7 @@ export default {
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
       let imageDataURL = canvas.toDataURL('image/png')
       console.log(imageDataURL)
-      this.uploadFile(imageDataURL)
+        this.uploadFile(imageDataURL)
       document.querySelector('#dl-btn').href = imageDataURL
       return canvas
     },
@@ -116,7 +116,12 @@ export default {
       console.log(fileName,'peratam')
       let storageRef = firebase.storage().ref()
       var uploadTask = storageRef.child(`images/${fileName}.png`).putString(imgDataUrl, 'data_url')
-      this.postFace(fileName)
+      if (localStorage.getItem('flag') === 'signup') {
+        console.log('hello')
+        this.postFace(fileName)
+      } else {
+        this.faceDetect(fileName)
+      }
       uploadTask.on('state_changed', function(snapshot) {
           // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
@@ -150,8 +155,6 @@ export default {
         let storageRef = firebase.storage().ref()
         storageRef.child(`images/${fileName}.png`).getDownloadURL().then(function(url) {
           console.log('url ', url)
-          let obj = {url: url, uniqueName: fileName}
-          // self.addingFaceId(obj)
            axios.post(`http://localhost:3000/api/addingfaceid`, {
             url: url,
             uniqueName: fileName
@@ -164,6 +167,35 @@ export default {
             console.log('added FaceId: ', res)
             self.persited = res.data.data.persistedFaceId
             self.login()
+            console.log('self', self)
+          })
+          .catch(err => {
+            console.log('err addingFaceId ', err)
+          })
+        }).catch(function(error) {
+          // Handle any errors
+          console.log('err', error)
+        })
+      }, 5000)
+    },
+    faceDetect (fileName) {
+      console.log('hello')
+      let self = this
+      setTimeout( () => {
+        let storageRef = firebase.storage().ref()
+        storageRef.child(`images/${fileName}.png`).getDownloadURL().then(function(url) {
+          console.log('url ', url)
+           axios.post(`http://localhost:3000/api/facedetection`, {
+            url: url,
+          }, {
+            headers: {
+              // 'Content-Type': 'application/json'
+            }
+          })
+          .then(res => {
+            console.log('FaceId: ', res)
+            // self.persited = res.data.data.persistedFaceId
+            //self.login()
             console.log('self', self)
           })
           .catch(err => {
