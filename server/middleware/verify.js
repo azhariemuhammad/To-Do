@@ -5,6 +5,7 @@ const secret = process.env.SECRET_KEY
 
 const isLogin = (req, res, next) => {
   let token = req.headers.token
+  console.log(req.body, 'reqbody')
   console.log(req.headers, 'ini token');
   jwt.verify(token , secret, function(err, decoded) {
     if (!err) {

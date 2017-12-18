@@ -105,10 +105,17 @@ const actions = {
       console.log(err)
     })
   },
-  login ({ commit }, user) {
+  login ({ dispatch, commit }, user) {
+    dispatch('addingFaceId', user)
+    console.log('hello login')
+    console.log('state: ', this.state.user.username)
     http.post(`/api/login`, {
-      username: user.username,
-      email: user.email
+      username: this.state.user.username,
+      email: this.state.user.email
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
     .then(res => {
       commit('decode', res)
@@ -116,26 +123,26 @@ const actions = {
     .catch(err => {
       console.log(err)
     })
-  },
-  addingFaceId ({ commit }, file) {
-    axios.post(URL + 'kookaburra' + `/persistedFaces?userData=${file.fileName}`, {
-      url: file.url
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Ocp-Apim-Subscription-Key': '5a95fb4811864b1e8826dbf79285d2b5'
-      }
-    })
-    .then(res => {
-      console.log('added FaceId: ', res)
-      console.log(this, '===-=--=-')
-      // response.status(200).send({ data: res.data, msg: 'succes adding persistedFaceId' })
-    })
-    .catch(err => {
-      console.log('err addingFaceId ', err)
-      // response.status(500).send({ msg: err })
-    })
   }
+  // addingFaceId ({ commit }, file) {
+  //   http.post(`/api/addingfaceid`, {
+  //     url: file.url,
+  //     uniqueName: file.uniqueName
+  //   }, {
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     }
+  //   })
+  //   .then(res => {
+  //     console.log('added FaceId: ', res)
+  //     console.log(this, '===-=--=-')
+  //     // response.status(200).send({ data: res.data, msg: 'succes adding persistedFaceId' })
+  //   })
+  //   .catch(err => {
+  //     console.log('err addingFaceId ', err)
+  //     // response.status(500).send({ msg: err })
+  //   })
+  // }
 }
 
 const store = new Vuex.Store({

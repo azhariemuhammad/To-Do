@@ -22,27 +22,25 @@
 <script>
 /* eslint-disable */
 import webcam from './WebCam'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import FB from 'fb'
 export default {
   name: 'Login',
   components: {webcam},
   data: function () {
     return {
-      photo: null,
-      user: {
-        username: '',
-        email: ''
-      }
+      photo: null
     }
   },
+  computed: mapState([
+    'user'
+  ]),
   methods: {
     ...mapActions([
       'login',
       'logout'
     ]),
     loginBtn: function () {
-      this.login
       this.$router.push({name: 'Hompage'})
       this.take_photo()
       // this.login(user)

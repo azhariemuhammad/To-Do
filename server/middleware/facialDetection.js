@@ -58,7 +58,6 @@ const getFacelist = (req, response, next) => {
 
 const addingFaceId = (req, response) => {
   console.log('body : ', req.body)
-  
   // req.body = JSON.parse(req.body)
   console.log('req.headers: ', req.headers)
   let fileName = req.body.uniqueName

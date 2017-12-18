@@ -9,7 +9,7 @@
 <script>
  /* eslint-disable */ 
 import randomWord from 'get-unique-name'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import axios from 'axios'
 import firebase from 'firebase'
 var config = {
@@ -30,7 +30,8 @@ export default {
       source: '',
       canvas: null,
       url: '',
-      id: ''
+      id: '',
+      persited: ''
     }
   },
   props: {
@@ -51,6 +52,9 @@ export default {
       default: 'image/png'
     }
   },
+  computed: mapState ([
+    'user'
+  ]),
   mounted () {
     if (!this.hasMedia()) {
       this.$emit('notsupported')
@@ -71,7 +75,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'addingFaceId'
+      'login'
     ]),
     hasMedia () {
       return !!this.getMedia()
@@ -146,28 +150,31 @@ export default {
         let storageRef = firebase.storage().ref()
         storageRef.child(`images/${fileName}.png`).getDownloadURL().then(function(url) {
           console.log('url ', url)
-          axios.post(URL + 'kookaburra' + `/persistedFaces?userData=${fileName}`, {
-            url: url
+          let obj = {url: url, uniqueName: fileName}
+          // self.addingFaceId(obj)
+           axios.post(`http://localhost:3000/api/addingfaceid`, {
+            url: url,
+            uniqueName: fileName
           }, {
             headers: {
-              "Content-Type": "application/json",
-              "Ocp-Apim-Subscription-Key": 'd7e51a262fde430e8e62554eac309e82'
-            }})
-          .then(({data}) => {
-            console.log('added FaceId: ', data)
-            self.id = data.persistedFaceId
+              // 'Content-Type': 'application/json'
+            }
+          })
+          .then(res => {
+            console.log('added FaceId: ', res)
+            self.persited = res.data.data.persistedFaceId
+            self.login()
+            console.log('self', self)
           })
           .catch(err => {
             console.log('err addingFaceId ', err)
-            // response.status(500).send({ msg: err })
           })
         }).catch(function(error) {
           // Handle any errors
           console.log('err', error)
         })
       }, 5000)
-    },
-
+    }
   }
 }
 </script>

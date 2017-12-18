@@ -12,6 +12,6 @@ var config = {
 
 firebase.initializeApp(config)
 
-var db = firebase.database()
+var db = firebase.storage()
 
 module.exports = db

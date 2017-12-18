@@ -9,7 +9,8 @@ const { createFaceListId, addingFaceId } = require('../middleware/facialDetectio
 
 
 const login = (req, res) => {
-  console.log(req.body, '-----')
+  console.log(req.headers, '-----')
+  console.log(req.body.email, '=======')
   User.findOrCreate({ username: req.body.username }, { email: req.body.email}, (err, result) => {
     if (!err) {
       console.log('ressult: ', result)
@@ -22,6 +23,7 @@ const login = (req, res) => {
       console.log(token, 'ini token server')
       res.status(200).send(token)
     } else {
+      console.log('err: ', err)
       res.status(500).send({ msg: 'wrong input', err: err })
     }
   })
