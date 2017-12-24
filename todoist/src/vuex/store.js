@@ -14,8 +14,10 @@ const state = {
   userId: '',
   user: {
     username: '',
-    email: ''
-  }
+    email: '',
+    persistedFaceId: ''
+  },
+  loader: false
 }
 
 const getters = {}
@@ -29,13 +31,12 @@ const mutations = {
     console.log('payload set Todos: ', payload)
     state.todos = payload
   },
-  replaceNewTodo (state, { newtodo }) {
-    console.log(newtodo)
-    state.todos.forEach((element, index) => {
-      if (element._id === newtodo._id) {
-        state.todos[index] = newtodo
-      }
+  replaceNewTodo (state, payload) {
+    console.log(payload)
+    let index = state.todos.findIndex(x => {
+      return x._id === payload._id
     })
+    state.todos[index] = payload
   },
   removeTodo (state, payload) {
     state.todos.forEach((element, index) => {
@@ -105,17 +106,26 @@ const actions = {
       console.log(err)
     })
   },
-  login ({ dispatch, commit }, user) {
-    dispatch('addingFaceId', user)
+  signup ({ state, commit }, payload) {
     console.log('hello login')
-    console.log('state: ', this.state.user.username)
+    console.log('state: ', payload)
     http.post(`/api/login`, {
-      username: this.state.user.username,
-      email: this.state.user.email
-    }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      username: state.user.username,
+      email: state.user.email,
+      faceId: state.user.persistedFaceId
+    })
+    .then(res => {
+      commit('decode', res)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  },
+  login ({ commit }, payload) {
+    console.log('hello login')
+    console.log('state: ', payload)
+    http.post(`/api/login`, {
+      faceId: payload.persistedFaceId
     })
     .then(res => {
       commit('decode', res)
@@ -124,25 +134,6 @@ const actions = {
       console.log(err)
     })
   }
-  // addingFaceId ({ commit }, file) {
-  //   http.post(`/api/addingfaceid`, {
-  //     url: file.url,
-  //     uniqueName: file.uniqueName
-  //   }, {
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     }
-  //   })
-  //   .then(res => {
-  //     console.log('added FaceId: ', res)
-  //     console.log(this, '===-=--=-')
-  //     // response.status(200).send({ data: res.data, msg: 'succes adding persistedFaceId' })
-  //   })
-  //   .catch(err => {
-  //     console.log('err addingFaceId ', err)
-  //     // response.status(500).send({ msg: err })
-  //   })
-  // }
 }
 
 const store = new Vuex.Store({

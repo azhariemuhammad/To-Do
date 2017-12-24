@@ -43,27 +43,9 @@ const getFacelist = (req, response, next) => {
   
 }
 
-// req.headers: {
-//   host: 'localhost:3000',
-//     connection: 'keep-alive',
-//       'content-length': '2',
-//         accept: 'application/json, text/plain, */*',
-//           origin: 'http://localhost:8080',
-//             'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36',
-//               'content-type': 'application/json;charset=UTF-8',
-//                 referer: 'http://localhost:8080/login',
-//                   'accept-encoding': 'gzip, deflate, br',
-//                     'accept-language': 'en-US,en;q=0.8,id;q=0.6'
-// }
-
 const addingFaceId = (req, response) => {
-  console.log('body : ', req.body)
-  // req.body = JSON.parse(req.body)
-  console.log('req.headers: ', req.headers)
   let fileName = req.body.uniqueName
   let url = req.body.url
-  console.log('url === : ', url)
-  console.log('uniqueName ===== : ', fileName)
   axios.post(URL + faceListName + `/persistedFaces?userData=${fileName}`, {
     url: url
   }, {
@@ -72,6 +54,9 @@ const addingFaceId = (req, response) => {
       "Ocp-Apim-Subscription-Key": facialKey
     }})
   .then(res => {
+    if (res.status === 204) {
+      console.log('bodo')
+    }
     console.log('added FaceId: ', res)
     response.status(200).send({ data: res.data, msg: 'succes adding persistedFaceId' })
   })
@@ -91,10 +76,13 @@ const faceDetect = (req, response, next) => {
     }
   })
   .then(res => {
-    console.log('faceDetect: ', res.data)
-    req.body.faceId = res.data[0].faceId
-    next()
-    // response.status(200).send({ data: res.data, msg: 'succes create faceId'})
+    if (res.length === 0) {
+      res.status(204).send({msg: `can't detect your face`})
+    } else {
+      console.log('faceDetect: ', res.data)
+      req.body.faceId = res.data[0].faceId
+      next()
+    }
   })
   .catch(err => {
     console.log('err facedetect: ', err)

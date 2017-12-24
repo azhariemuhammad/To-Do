@@ -56,6 +56,7 @@ export default {
     },
     doneTask: function (todoist) {
       console.log('todois', todoist)
+      todoist.isComplete = todoist.isComplete = !todoist.isComplete
       this.updateTodo(todoist)
     }
   },

@@ -11,13 +11,17 @@ const { createFaceListId, addingFaceId } = require('../middleware/facialDetectio
 const login = (req, res) => {
   console.log(req.headers, '-----')
   console.log(req.body.email, '=======')
-  User.findOrCreate({ username: req.body.username }, { email: req.body.email}, (err, result) => {
+  console.log(req.body.faceId, '=====erge==')
+  User.findOrCreate(
+    { faceId: req.body.faceId },
+    req.body, (err, result) => {
     if (!err) {
       console.log('ressult: ', result)
       let payload = {
         userId: result._id,
         username: result.username,
-        email: result.email
+        email: result.email,
+        faceId: result.persistedFaceId
       }
       let token = jwt.sign(payload, secret)
       console.log(token, 'ini token server')

@@ -36,12 +36,11 @@ export default {
   ]),
   methods: {
     ...mapActions([
-      'login',
       'logout'
     ]),
     loginBtn: function () {
       localStorage.setItem('flag', 'login')
-      this.$router.push({name: 'Hompage'})
+      // this.$router.push({name: 'Hompage'})
       this.take_photo()
       // this.login(user)
     },

@@ -10,6 +10,7 @@ let decoded = ''
 const findAllTodo = (req, res) => {
   //decoded = jwt.decode(req.headers.token)
   // Todo.find().
+  console.log('params, ', req.params.userId)
   Todo.find({userId:req.params.userId}).
   //Todo.find({userId:decoded.id}).
   populate('userId').

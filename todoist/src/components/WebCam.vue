@@ -1,7 +1,6 @@
 <template>
   <div>
     <video ref="video" :width="this.width" :height="this.height" :src="this.source" :autoplay="this.autoplay"></video>
-    <a id="dl-btn" href="#" download="glorious_selfie.jpeg">Save Photo</a>
   </div>
   
 </template>
@@ -30,8 +29,7 @@ export default {
       source: '',
       canvas: null,
       url: '',
-      id: '',
-      persited: ''
+      id: ''
     }
   },
   props: {
@@ -75,7 +73,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'login'
+      'login',
+      'signup'
     ]),
     hasMedia () {
       return !!this.getMedia()
@@ -106,7 +105,6 @@ export default {
       const { ctx, canvas } = this
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
       let imageDataURL = canvas.toDataURL('image/png')
-      console.log(imageDataURL)
         this.uploadFile(imageDataURL)
       document.querySelector('#dl-btn').href = imageDataURL
       return canvas
@@ -123,7 +121,6 @@ export default {
         this.faceDetect(fileName)
       }
       uploadTask.on('state_changed', function(snapshot) {
-          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           console.log('Upload is ' + progress + '% done')
         switch (snapshot.state) {
@@ -149,7 +146,6 @@ export default {
         })
     },
     postFace (fileName) {
-      const URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0/facelists/'
       let self = this
       setTimeout( () => {
         let storageRef = firebase.storage().ref()
@@ -158,16 +154,16 @@ export default {
            axios.post(`http://localhost:3000/api/addingfaceid`, {
             url: url,
             uniqueName: fileName
-          }, {
-            headers: {
-              // 'Content-Type': 'application/json'
-            }
           })
           .then(res => {
-            console.log('added FaceId: ', res)
-            self.persited = res.data.data.persistedFaceId
-            self.login()
+            if (!res) {
+              console.log('boodo')
+            }
+            console.log('added FaceId: ', res.data.data.persistedFaceId)
+            self.user.persistedFaceId = res.data.data.persistedFaceId
+            self.singup()
             console.log('self', self)
+            self.$router.push({path: '/'})
           })
           .catch(err => {
             console.log('err addingFaceId ', err)
@@ -195,11 +191,11 @@ export default {
           .then(res => {
             console.log('FaceId: ', res)
             // self.persited = res.data.data.persistedFaceId
-            //self.login()
-            console.log('self', self)
+            self.login(res.data.data[0])
           })
           .catch(err => {
             console.log('err addingFaceId ', err)
+            alert(err + ' ' + `can't detect your face`)
           })
         }).catch(function(error) {
           // Handle any errors

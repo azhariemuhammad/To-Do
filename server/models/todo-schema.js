@@ -6,7 +6,7 @@ const todoSchema = new Schema({
   name       : String,
   userId     : {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'Usertodo'
   },
   task       : String,
   tag        : String,
@@ -19,6 +19,6 @@ const todoSchema = new Schema({
 
 
 
-const Todo = mongoose.model('Todo', todoSchema)
+const Todo = mongoose.model('Todoist', todoSchema)
 
 module.exports = Todo;
