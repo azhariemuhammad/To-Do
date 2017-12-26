@@ -54,9 +54,6 @@ const addingFaceId = (req, response) => {
       "Ocp-Apim-Subscription-Key": facialKey
     }})
   .then(res => {
-    if (res.status === 204) {
-      console.log('bodo')
-    }
     console.log('added FaceId: ', res)
     response.status(200).send({ data: res.data, msg: 'succes adding persistedFaceId' })
   })
@@ -94,7 +91,7 @@ const findSimilars = (req, response) => {
   axios.post(URL_FindSimilars, {
     'faceId': req.body.faceId,
     'faceListId': faceListName,
-    'maxNumOfCandidatesReturned': 10,
+    'maxNumOfCandidatesReturned': 1,
     mode: 'matchPerson'
   }, {
     headers: {

@@ -4,18 +4,18 @@ const uniqueValidator = require('mongoose-unique-validator');
 const findOrCreate = require('mongoose-find-or-create')
 
 const userSchema = new Schema({
-  username: { type: String, required: true, unique: true },
-  email: {
-    type: String,
-    validate: {
-      validator: function(email) {
-        let emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-        return emailReg.test(email)
-      },
-      message: '{VALUE} is not a valid email'
-    },
-    required: [true, 'Email required']
-  },
+  username: { type: String, unique: true },
+  // email: {
+  //   type: String,
+  //   validate: {
+  //     validator: function(email) {
+  //       let emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+  //       return emailReg.test(email)
+  //     },
+  //     message: '{VALUE} is not a valid email'
+  //   },
+  //   required: [true, 'Email required']
+  // },
   faceId: { type: String, required: true, unique: true },
   createdAt: {
     type: Date,

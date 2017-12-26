@@ -1,23 +1,25 @@
 <template>
 <div>
-  <div v-if="loader">
-    <ring-loader :loading="loading" :color="color1" :size="size"></ring-loader>
-  </div>
-  <div v-else>
-    <form @submit.prevent="loginBtn">
+    <form>
+      <div class="field">
       <label for="Username"></label>
-      <input type="text" v-model="user.username" placeholder="username">
-      <br>
-      <label for="Email"></label>
-      <input type="text" v-model="user.email" placeholder="email">
+        <div class="control">
+          <input class="input" type="text" v-model="user.username" placeholder="username">
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <label for="Email"></label>
+            <input class="input" type="text" v-model="user.email" placeholder="email">
+        </div>
+      </div>
     </form>
-    
-    <button id="fbLogin" @click="loginBtn">Submit</button>
       <div id="app" class="component">
         <webcam ref="webcam"></webcam>
         <img :src="this.photo" style="width:300px;height:300px; display:none"/>
-        <!-- <button type="button" @click="take_photo">Capture Photo</button> -->
-      </div>
+        <div class="button-get">
+          <a class="button is-link tooltip" data-tooltip="You can capture your face,  Make sure the light is good " id="login" @click="loginBtn">GET STARTED</a>
+        </div>
   </div>
     
   
@@ -27,32 +29,30 @@
 
 <script>
 /* eslint-disable */
-import RingLoader from 'vue-spinner/src/RingLoader.vue'
-import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
+
 import webcam from './WebCam'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'SignUp',
-  components: { PulseLoader, RingLoader, webcam},
+  components: { webcam},
   data: function () {
     return {
-      photo: null,
-      color: '#cc181e',
-      color1: '#5bc0de',
-      size: '45px',
-      margin: '2px',
-      radius: '2px',
-      loader: false
+      photo: null
     }
   },
   computed: mapState([
-    'user'
+    'user',
+    'loader'
   ]),
   methods: {
+     ...mapMutations([
+      'loads'
+    ]),
     loginBtn: function () {
       localStorage.setItem('flag', 'signup')
-      this.loader = true
+      this.loads()
       this.take_photo()
+      this.loads()
       // this.login(user)
     },
     take_photo: function () {
@@ -63,5 +63,10 @@ export default {
 </script>
 
 <style>
-
+  #login {
+    margin-top: 2em;
+  }
+  .button-get {
+    text-align: center;
+  }
 </style>

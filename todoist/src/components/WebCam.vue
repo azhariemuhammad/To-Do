@@ -1,14 +1,26 @@
 <template>
   <div>
-    <video ref="video" :width="this.width" :height="this.height" :src="this.source" :autoplay="this.autoplay"></video>
+  <div v-if="loader" id="ringring">
+    <pulse-loader :color="color" :size="size"></pulse-loader> 
+    </div>
+    <div v-else>
+      <div id="webcam">
+        <video ref="video" :width="this.width" :height="this.height" :src="this.source" :autoplay="this.autoplay"></video>
+      </div>
+      </div>
+    </div>
   </div>
+  
   
 </template>
 
 <script>
- /* eslint-disable */ 
+ /* eslint-disable */
+import RingLoader from 'vue-spinner/src/RingLoader.vue'
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
+import BounceLoader from 'vue-spinner/src/BounceLoader.vue'
 import randomWord from 'get-unique-name'
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapMutations } from 'vuex'
 import axios from 'axios'
 import firebase from 'firebase'
 var config = {
@@ -23,13 +35,19 @@ var config = {
 firebase.initializeApp(config)
 export default {
   name: 'WebCam',
+  components: { PulseLoader, RingLoader, BounceLoader },
   data () {
     return {
       stream: '',
       source: '',
       canvas: null,
       url: '',
-      id: ''
+      id: '',
+      color: '#1a0dab',
+      color1: '#1a0dab',
+      size: '20px',
+      margin: '2px',
+      radius: '2px'
     }
   },
   props: {
@@ -39,7 +57,7 @@ export default {
     },
     height: {
       type: Number,
-      default: 500
+      default: 400
     },
     autoplay: {
       type: Boolean,
@@ -51,7 +69,8 @@ export default {
     }
   },
   computed: mapState ([
-    'user'
+    'user',
+    'loader'
   ]),
   mounted () {
     if (!this.hasMedia()) {
@@ -75,6 +94,9 @@ export default {
     ...mapActions([
       'login',
       'signup'
+    ]),
+    ...mapMutations([
+      'loads'
     ]),
     hasMedia () {
       return !!this.getMedia()
@@ -106,7 +128,6 @@ export default {
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
       let imageDataURL = canvas.toDataURL('image/png')
         this.uploadFile(imageDataURL)
-      document.querySelector('#dl-btn').href = imageDataURL
       return canvas
     },
     uploadFile (imgDataUrl, cb) {
@@ -156,16 +177,15 @@ export default {
             uniqueName: fileName
           })
           .then(res => {
-            if (!res) {
-              console.log('boodo')
-            }
+            self.loads()
             console.log('added FaceId: ', res.data.data.persistedFaceId)
             self.user.persistedFaceId = res.data.data.persistedFaceId
-            self.singup()
+            self.signup()
             console.log('self', self)
             self.$router.push({path: '/'})
           })
           .catch(err => {
+            self.loads()
             console.log('err addingFaceId ', err)
           })
         }).catch(function(error) {
@@ -192,9 +212,11 @@ export default {
             console.log('FaceId: ', res)
             // self.persited = res.data.data.persistedFaceId
             self.login(res.data.data[0])
+            self.$router.push({path: '/'})
           })
           .catch(err => {
             console.log('err addingFaceId ', err)
+            self.loads()
             alert(err + ' ' + `can't detect your face`)
           })
         }).catch(function(error) {
@@ -206,3 +228,17 @@ export default {
   }
 }
 </script>
+<style scoped>
+  video {
+    margin-bottom: -35px;
+  }
+  #ringring {
+    width: 200px;
+    margin: 0 auto;
+  }
+  .v-spinner {
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-left: 4em;
+  }
+</style>

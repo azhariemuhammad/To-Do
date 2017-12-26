@@ -2,11 +2,11 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import jwtDecode from 'jwt-decode'
-
+import router from '../router'
 const http = axios.create({
   baseURL: 'http://localhost:3000'
 })
-
+Vue.use(router)
 Vue.use(Vuex)
 const state = {
   todos: [],
@@ -20,7 +20,12 @@ const state = {
   loader: false
 }
 
-const getters = {}
+const getters = {
+  // loadings (state) {
+  //   let foo = state.loader = true
+  //   return foo
+  // }
+}
 
 const mutations = {
   setNewTodo (state, payload) {
@@ -44,6 +49,9 @@ const mutations = {
         state.todos.splice(index, 1)
       }
     })
+  },
+  loads (state) {
+    state.loader = state.loader = !state.loader
   },
   decode (state, token) {
     const decoded = jwtDecode(token.data)
@@ -109,16 +117,18 @@ const actions = {
   signup ({ state, commit }, payload) {
     console.log('hello login')
     console.log('state: ', payload)
-    http.post(`/api/login`, {
+    http.post(`/api/signup`, {
       username: state.user.username,
-      email: state.user.email,
       faceId: state.user.persistedFaceId
     })
     .then(res => {
-      commit('decode', res)
+      commit('loads')
+      console.log('res: ', res)
     })
     .catch(err => {
       console.log(err)
+      commit('loads')
+      alert('probably the username is already use or wrong input')
     })
   },
   login ({ commit }, payload) {
@@ -132,6 +142,9 @@ const actions = {
     })
     .catch(err => {
       console.log(err)
+      commit('loads')
+      router.push({path: '/'})
+      alert(err, '=-=-=-=-=-=')
     })
   }
 }

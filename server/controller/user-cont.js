@@ -42,8 +42,8 @@ const create = (req, res) => {
         res.status(201).send({user:user, message:msg})
       })
       .catch(err => {
-        console.log(err);
-        res.status(200).send(err)
+        console.log(err, '======-=-=-==-=');
+        res.status(500).send(err)
       })
   //   }
   // })

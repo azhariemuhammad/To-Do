@@ -12,6 +12,7 @@ var config = {
 
 firebase.initializeApp(config)
 
-var db = firebase.storage()
+var provider = new firebase.auth.GoogleAuthProvider();
 
-module.exports = db
+
+module.exports = provider

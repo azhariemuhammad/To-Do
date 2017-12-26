@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Hompage from '@/components/Hompage'
 import SignUp from '@/components/SignUp'
 import Login from '@/components/Login'
+import Register from '@/components/Register'
 
 Vue.use(Router)
 
@@ -18,13 +19,21 @@ let router = new Router({
       }
     },
     {
-      path: '/signup',
-      name: 'SignUp',
-      component: SignUp
-    }, {
-      path: '/login',
-      name: 'Login',
-      component: Login
+      path: '',
+      name: 'Register',
+      component: Register,
+      children: [
+        {
+          path: '/signup',
+          name: 'SignUp',
+          component: SignUp
+        },
+        {
+          path: '/login',
+          name: 'Login',
+          component: Login
+        }
+      ]
     }
   ]
 })
