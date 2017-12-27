@@ -36,7 +36,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'logout'
+      'logout',
+      'signup'
     ]),
      ...mapMutations([
       'loads',
@@ -50,14 +51,12 @@ export default {
     },
     facebookLogin: function () {
       let self = this
+      let url = 'https://us-central1-vue-project-1a9b9.cloudfunctions.net/app/facebooklogin?accesstoken='
       FB.login(function (response) {
-        axios.post('http://localhost:3000/api/facebooklogin', {
-          accesstoken: response.authResponse.accessToken
-        })
+        let accesstoken = response.authResponse.accessToken
+        axios.get(url + accesstoken)
         .then(function (result) {
-          localStorage.setItem('jwtToken', result.data)
-          self.decode(result.data)
-          this.$router.push({path: '/'})
+          self.signup(result)
         })
         .catch(function (error) {
           console.log(error);

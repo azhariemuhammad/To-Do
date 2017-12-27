@@ -3,7 +3,7 @@
     <nav class="todo">
       <ul class="logo">
         <li>
-          <h1>Todo</h1>
+          <h1 class="name">Todoist</h1>
         </li>
         <li class="img-logo">
           
@@ -27,6 +27,8 @@ export default {
   methods: {
     logoutBtn: function () {
       localStorage.removeItem('userId')
+      localStorage.removeItem('username')
+      this.$router.push('/')
     }
   }
 }
@@ -81,6 +83,10 @@ ul {
 .img-logo {
   margin-left: auto;
   margin-right: auto
+}
+
+.name {
+  font-family: 'Courgette', cursive;
 }
 
 </style>

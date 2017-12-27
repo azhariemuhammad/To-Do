@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const secret = process.env.SECRET_KEY
 const { createFaceListId, addingFaceId } = require('../middleware/facialDetection')
-
+const findOrCreate = require('mongoose-find-or-create')
 
 
 const login = (req, res) => {
@@ -32,22 +32,20 @@ const login = (req, res) => {
 }
 
 const signup = (req, res) => {
-  console.log(req.headers, '-----')
   console.log(req.body.username, '=====erge==')
-  User.create({
-    faceId: req.body.faceId,
-    username: req.body.username
-    }, (err, result) => {
-      if (!err) {
-        console.log(result, ' token server')
-        res.status(200).send(result)
-      } else {
-        console.log('err: ', err)
-        res.status(500).send({ msg: 'wrong input', err: err })
-      }
-    })
+  User.findOrCreate({
+  faceId: req.body.faceId,
+  username: req.body.username
+  }, (err, result) => {
+    if (!err) {
+      console.log(result, ' token server')
+      res.status(200).send(result)
+    } else {
+      console.log('err: ', err)
+      res.status(500).send({ msg: 'wrong input', err: err })
+    }
+  })
 }
-
 
 
 

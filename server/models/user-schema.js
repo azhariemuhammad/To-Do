@@ -16,7 +16,7 @@ const userSchema = new Schema({
   //   },
   //   required: [true, 'Email required']
   // },
-  faceId: { type: String, required: true, unique: true },
+  faceId: { type: String, unique: true },
   createdAt: {
     type: Date,
     default: Date.now

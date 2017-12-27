@@ -18,8 +18,8 @@
                   I hope you are having a great day!
                 </h2>
                 <div class="level-center">
-                  <p class="level-item"><strong>Today's Weather ||</strong></p>
-                  <p class="level-item"><a>Fahrenheit</a></p>
+                  <p class="level-item"><strong></strong></p>
+                  <p class="level-item"><a></a></p>
                 </div>
               </div>
             </div>
@@ -59,6 +59,14 @@ export default {
 
 <style scoped>
 
+.hero-body {
+  background-image: url('https://cdn-images-1.medium.com/max/800/1*tRPdusfzHGYIOJ4QxzbTCw.gif');
+  background-size: cover;
+}
+.hero.is-small .hero-body {
+    padding-bottom: 5.5rem;
+    padding-top: 1.5rem;
+}
 
 
 </style>

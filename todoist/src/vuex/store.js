@@ -82,7 +82,7 @@ const actions = {
       tag: formTodo.tag,
       isComplete: false
     })
-    .then(({ data }) => {
+    .then(({data}) => {
       console.log('newTodo: ', data.todo)
       commit('setNewTodo', data)
     })
@@ -115,15 +115,19 @@ const actions = {
     })
   },
   signup ({ state, commit }, payload) {
-    console.log('hello login')
+    console.log('hello singup')
     console.log('state: ', payload)
     http.post(`/api/signup`, {
-      username: state.user.username,
+      username: payload.data.name || state.user.username,
       faceId: state.user.persistedFaceId
     })
     .then(res => {
       commit('loads')
-      console.log('res: ', res)
+      console.log('res: ', res.data)
+      localStorage.setItem('username', res.data.username)
+      localStorage.setItem('userId', res.data._id)
+      state.username = res.data.username
+      state.userId = res.data._id
     })
     .catch(err => {
       console.log(err)
