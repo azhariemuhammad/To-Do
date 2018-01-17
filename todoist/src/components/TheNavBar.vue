@@ -3,7 +3,7 @@
     <nav class="todo">
       <ul class="logo">
         <li>
-          <h1 class="name">Todoist</h1>
+          <h3 class="name">Todoist</h3>
         </li>
         <li class="img-logo">
           
@@ -59,6 +59,7 @@ ul {
 
 .logo {
   cursor: pointer;
+  font-size: 1.6em;
 }
 
 .logo li:hover{
